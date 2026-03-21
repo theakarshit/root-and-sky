@@ -577,8 +577,10 @@ function applyCity(){
   document.getElementById('heroCta').href='build.html?city='+currentCity;
 }
 
-/* CONTACT FORM → WA */
-function submitContact(){
+/* CONTACT FORM → GOOGLE SHEET + WA */
+const APPS_SCRIPT_URL='https://script.google.com/macros/s/AKfycbwk29FgWc0B2DaNH6xnWTBzF1E8DGciEV2jVmKh6VNX0WB8ur_m0MEAshpHIZhjbfiZLw/exec';
+
+async function submitContact(){
   const name=document.getElementById('cf-name').value.trim();
   const phone=document.getElementById('cf-phone').value.trim();
   const type=document.getElementById('cf-type').value;
@@ -587,7 +589,24 @@ function submitContact(){
   const msg=document.getElementById('cf-msg').value.trim();
   if(!name||!phone){alert('Please enter your name and phone number.');return;}
   const city=CITIES[currentCity];
-  const wa=`Hi Root & Sky! 🌿\n\nI'd like to request a free site visit.\n\n*Name:* ${name}\n*Phone:* ${phone}\n*City:* ${city.label}\n*Space type:* ${type||'Not specified'}\n*Size:* ${size||'Not sure'}\n*Area:* ${area||'Not specified'}\n${msg?`*Notes:* ${msg}\n`:''}\nLooking forward to hearing from you!`;
+  const refId='RS'+Date.now().toString().slice(-6);
+
+  /* send to Google Sheet */
+  const sheetData={
+    refId,name,phone,email:'',city:currentCity,cityLabel:city.label,
+    spaceType:type||'Not specified',spaceLabel:type||'Not specified',
+    theme:'Contact Form Enquiry',themeId:'contact',
+    tierName:'—',price:'—',
+    plants:[],includes:'Free site visit request',
+    size:size||'',area:area||'',timing:'',notes:msg||'',
+    submittedAt:new Date().toISOString()
+  };
+  if(APPS_SCRIPT_URL&&APPS_SCRIPT_URL!=='YOUR_APPS_SCRIPT_URL_HERE'){
+    try{await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(sheetData)});}catch(e){console.warn(e);}
+  }
+
+  /* open WhatsApp */
+  const wa=`Hi Root & Sky! 🌿\n\nI'd like to request a free site visit.\n\nRef: #${refId}\n*Name:* ${name}\n*Phone:* ${phone}\n*City:* ${city.label}\n*Space type:* ${type||'Not specified'}\n*Size:* ${size||'Not sure'}\n*Area:* ${area||'Not specified'}\n${msg?`*Notes:* ${msg}\n`:''}\nLooking forward to hearing from you!`;
   window.open('https://wa.me/'+city.waNumber+'?text='+encodeURIComponent(wa),'_blank');
 }
 
