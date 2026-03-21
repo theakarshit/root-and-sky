@@ -1,22 +1,31 @@
 /**
  * Root & Sky — Google Apps Script for form submissions
  *
+ * STANDALONE SCRIPT — works from script.google.com directly.
+ * Connected to Sheet: https://docs.google.com/spreadsheets/d/1agI1syfp8eLhZZeqFi1_-4tN1Jllj_3GqY7hcDTGflY/
+ *
  * SETUP:
- * 1. Create a Google Sheet with the headers listed below
- * 2. Go to Extensions → Apps Script
- * 3. Paste this entire script
- * 4. Click Deploy → New deployment → Web app
+ * 1. Go to script.google.com → New project
+ * 2. Paste this entire script
+ * 3. Run setupSheet() once (select it from dropdown → Run)
+ * 4. Grant permissions when prompted (Sheets + Mail access)
+ * 5. Deploy → New deployment → Web app
  *    - Execute as: Me
  *    - Who has access: Anyone
- * 5. Copy the deployment URL
- * 6. Replace the APPS_SCRIPT_URL in build.html with your URL
+ * 6. Copy the deployment URL → replace APPS_SCRIPT_URL in build.html and index.html
  */
+
+const SHEET_ID = '1agI1syfp8eLhZZeqFi1_-4tN1Jllj_3GqY7hcDTGflY';
+
+function getSheet() {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  return ss.getSheetByName('Leads') || ss.getSheets()[0];
+}
 
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Leads')
-                  || SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    const sheet = getSheet();
 
     // Format plants list
     const plantsList = Array.isArray(data.plants)
@@ -37,7 +46,7 @@ function doPost(e) {
       data.cityLabel || data.city || '',         // F: City
       data.spaceLabel || data.spaceType || '',   // G: Space Type
       data.theme || '',                          // H: Theme
-      data.tierName || data.planName || '',      // I: Plan Tier
+      data.tierName || data.planName || '',       // I: Plan Tier
       data.price || data.grandTotal || '',       // J: Price
       plantsList,                                // K: Plants
       data.size || '',                           // L: Space Size
@@ -52,8 +61,7 @@ function doPost(e) {
     const lastRow = sheet.getLastRow();
     sheet.getRange(lastRow, 16).setBackground('#e8f5e9').setFontWeight('bold');
 
-    // Auto-resize columns
-    // (only run occasionally to avoid slow-down)
+    // Auto-resize columns occasionally
     if (lastRow % 10 === 0) {
       for (let i = 1; i <= 17; i++) {
         sheet.autoResizeColumn(i);
@@ -107,10 +115,10 @@ function doGet(e) {
 
 /**
  * Run this ONCE to set up the sheet headers and formatting.
- * Go to Apps Script → select setupSheet → Run
+ * Select setupSheet from the dropdown → click Run
  */
 function setupSheet() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = SpreadsheetApp.openById(SHEET_ID);
   let sheet = ss.getSheetByName('Leads');
 
   if (!sheet) {
@@ -181,5 +189,5 @@ function setupSheet() {
   sheet.getRange(2, 17, 500, 1).setDataValidation(dateRule);
 
   SpreadsheetApp.flush();
-  Logger.log('✅ Sheet setup complete!');
+  Logger.log('✅ Sheet setup complete! Check your sheet: https://docs.google.com/spreadsheets/d/' + SHEET_ID);
 }
