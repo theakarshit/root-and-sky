@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build Your Garden — Root & Sky</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --forest:#1a2318;--forest-mid:#243021;--forest-soft:#2e3d2b;
+  --moss:#4a6741;--leaf:#7a9e6e;--sage:#a8bf99;
+  --parchment:#f5f0e8;--parch-dark:#ece5d5;--cream:#faf7f1;
+  --gold:#c9a84c;--gold-light:#e8cc80;--gold-dim:rgba(201,168,76,.15);
+  --muted:#8a9e84;--r:4px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{font-size:16px;scroll-behavior:smooth;}
+body{font-family:'Jost',sans-serif;background:var(--parchment);color:var(--forest);cursor:none;min-height:100vh;}
+.cur{width:7px;height:7px;background:var(--gold);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+.cur-ring{width:28px;height:28px;border:1px solid rgba(201,168,76,.35);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);}
+@media(hover:none){.cur,.cur-ring{display:none;}body{cursor:auto;}}
+
+/* ── HEADER ── */
+.header{background:var(--forest);padding:20px 52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--gold-dim);}
+.header-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.hl-icon{width:32px;height:32px;border-radius:50%;border:1px solid var(--gold-dim);display:flex;align-items:center;justify-content:center;}
+.hl-text{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:300;letter-spacing:.1em;color:var(--parchment);}
+.hl-text em{color:var(--gold);font-style:normal;}
+.header-back{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:300;letter-spacing:.16em;text-transform:uppercase;color:var(--sage);text-decoration:none;transition:color .2s;}
+.header-back:hover{color:var(--gold);}
+
+/* ── PROGRESS ── */
+.progress-wrap{background:var(--forest-mid);border-bottom:1px solid var(--gold-dim);padding:0 52px;}
+.progress-inner{display:flex;align-items:center;max-width:960px;margin:0 auto;}
+.prog-step{display:flex;align-items:center;gap:10px;padding:18px 0;position:relative;cursor:none;background:none;border:none;font-family:inherit;}
+.prog-num{width:28px;height:28px;border-radius:50%;border:1px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:300;color:var(--muted);transition:all .3s;flex-shrink:0;}
+.prog-label{font-size:11px;font-weight:300;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);transition:color .3s;white-space:nowrap;}
+.prog-step.active .prog-num{background:var(--gold);color:var(--forest);border-color:var(--gold);}
+.prog-step.active .prog-label{color:var(--parchment);}
+.prog-step.done .prog-num{background:var(--moss);border-color:var(--moss);color:white;}
+.prog-step.done .prog-label{color:var(--sage);}
+.prog-step.done:hover .prog-label{color:var(--gold-light);text-decoration:underline;text-underline-offset:3px;}
+.prog-step.done:hover .prog-num{background:#3d5936;}
+.prog-spacer{flex:1;height:1px;background:rgba(201,168,76,.18);margin:0 8px;}
+
+/* ── CITY BAR ── */
+.city-bar{background:var(--forest-soft);padding:12px 52px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--gold-dim);}
+.city-bar-label{font-size:10px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
+.city-toggle{display:flex;background:rgba(255,255,255,.06);border:1px solid var(--gold-dim);border-radius:100px;overflow:hidden;}
+.city-toggle button{padding:6px 16px;font-family:'Jost',sans-serif;font-size:10px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);background:none;border:none;cursor:none;transition:all .2s;}
+.city-toggle button.active{background:var(--gold);color:var(--forest);font-weight:500;}
+
+/* ── MAIN ── */
+.builder-main{max-width:1100px;margin:0 auto;padding:60px 52px;}
+.step-panel{display:none;animation:fadeUp .4s ease;}
+.step-panel.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.step-intro{margin-bottom:52px;}
+.step-eye{font-size:10px;font-weight:400;letter-spacing:.28em;text-transform:uppercase;color:var(--moss);margin-bottom:12px;}
+.step-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,3.5vw,48px);font-weight:300;line-height:1.1;color:var(--forest);margin-bottom:14px;}
+.step-title em{font-style:italic;color:var(--moss);}
+.step-sub{font-size:14px;font-weight:300;line-height:1.8;color:#5a7055;max-width:580px;}
+
+/* ── STEP 1: SPACE ── */
+.space-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:900px;}
+.space-card{background:white;border:1.5px solid rgba(74,103,65,.12);border-radius:8px;padding:36px 32px;cursor:none;transition:all .25s;position:relative;overflow:hidden;}
+.space-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--moss);transform:scaleY(0);transform-origin:bottom;transition:transform .3s;}
+.space-card:hover{border-color:rgba(74,103,65,.3);transform:translateY(-3px);box-shadow:0 12px 36px rgba(26,35,24,.08);}
+.space-card:hover::before{transform:scaleY(1);}
+.space-card.selected{border-color:var(--moss);border-width:2px;background:#f8fcf6;}
+.space-card.selected::before{transform:scaleY(1);}
+.sc-icon{font-size:44px;margin-bottom:20px;display:block;}
+.sc-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--forest);margin-bottom:6px;}
+.sc-desc{font-size:13px;font-weight:300;line-height:1.75;color:#7a8e74;margin-bottom:18px;}
+.sc-range{font-size:12px;font-weight:400;letter-spacing:.08em;color:var(--moss);}
+.sc-check{position:absolute;top:16px;right:16px;width:22px;height:22px;background:var(--moss);border-radius:50%;display:none;align-items:center;justify-content:center;color:white;font-size:11px;}
+.space-card.selected .sc-check{display:flex;}
+
+/* ── STEP 1B: THEME ── */
+.theme-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;max-width:800px;}
+.theme-card{background:white;border:1.5px solid rgba(74,103,65,.12);border-radius:8px;padding:30px 28px;cursor:none;transition:all .25s;position:relative;overflow:hidden;}
+.theme-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold);transform:scaleY(0);transform-origin:bottom;transition:transform .3s;}
+.theme-card:hover{border-color:rgba(201,168,76,.35);transform:translateY(-3px);box-shadow:0 12px 36px rgba(26,35,24,.08);}
+.theme-card:hover::before{transform:scaleY(1);}
+.theme-card.selected{border-color:var(--gold);border-width:2px;background:#fdfaf3;}
+.theme-card.selected::before{transform:scaleY(1);}
+.tc-icon{font-size:36px;margin-bottom:14px;display:block;}
+.tc-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--forest);margin-bottom:4px;}
+.tc-desc{font-size:12px;font-weight:300;line-height:1.7;color:#7a8e74;margin-bottom:12px;}
+.tc-price{font-size:12px;font-weight:400;letter-spacing:.08em;color:var(--gold);}
+.tc-check{position:absolute;top:14px;right:14px;width:22px;height:22px;background:var(--gold);border-radius:50%;display:none;align-items:center;justify-content:center;color:var(--forest);font-size:11px;}
+.theme-card.selected .tc-check{display:flex;}
+.step-back{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:300;color:var(--moss);background:none;border:none;cursor:none;margin-bottom:28px;transition:color .2s;}
+.step-back:hover{color:var(--gold);}
+
+/* ── STEP 2: PLAN SELECTION ── */
+.plan-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:36px;}
+.plan-tab{background:white;border:1.5px solid rgba(74,103,65,.12);border-radius:8px;padding:22px 20px;cursor:none;transition:all .25s;position:relative;overflow:hidden;text-align:center;}
+.plan-tab::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--moss);transform:scaleX(0);transform-origin:left;transition:transform .3s;}
+.plan-tab:hover{border-color:rgba(74,103,65,.3);transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,35,24,.06);}
+.plan-tab:hover::before{transform:scaleX(1);}
+.plan-tab.active{border-color:var(--moss);border-width:2px;background:#f8fcf6;}
+.plan-tab.active::before{transform:scaleX(1);}
+.plan-tab .pc-badge{position:absolute;top:-1px;right:-1px;background:var(--gold);color:var(--forest);font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:0 8px 0 8px;}
+.pc-tier{font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--moss);margin-bottom:6px;}
+.pc-price{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--forest);margin-bottom:4px;line-height:1;}
+.pc-includes{font-size:11px;font-weight:300;line-height:1.6;color:#7a8e74;}
+
+/* plant display grid — read-only cards */
+.step2-layout{display:grid;grid-template-columns:1fr 320px;gap:40px;align-items:start;}
+.section-label{font-size:10px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--moss);margin-bottom:16px;display:flex;align-items:center;gap:12px;}
+.section-label::after{content:'';flex:1;height:1px;background:rgba(74,103,65,.15);}
+.plant-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-bottom:20px;}
+.plant-card{background:white;border:1.5px solid rgba(74,103,65,.1);border-radius:6px;overflow:hidden;transition:all .22s;}
+.plant-card:hover{border-color:rgba(74,103,65,.22);transform:translateY(-2px);box-shadow:0 10px 28px rgba(26,35,24,.06);}
+.plant-img-area{height:90px;background:var(--parchment);display:flex;align-items:center;justify-content:center;font-size:38px;position:relative;}
+.plant-card .plant-img-area{background:#edf5e6;}
+.plant-incl-mark{position:absolute;top:8px;right:8px;width:18px;height:18px;background:var(--moss);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:9px;}
+.plant-body{padding:11px 12px;}
+.plant-nm{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:400;color:var(--forest);margin-bottom:1px;}
+.plant-bt{font-size:9px;font-style:italic;color:#9aae94;}
+.plant-tag{display:inline-block;margin-top:6px;font-size:9px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:100px;}
+.plant-tag.t-foliage{color:#3d6e36;background:rgba(61,110,54,.1);}
+.plant-tag.t-flowering{color:#a84c6a;background:rgba(168,76,106,.1);}
+.plant-tag.t-herb{color:#4a7741;background:rgba(74,119,65,.1);}
+.plant-tag.t-succulent{color:#6e8a4a;background:rgba(110,138,74,.1);}
+.plant-tag.t-tropical{color:#2e7d5a;background:rgba(46,125,90,.1);}
+.plant-tag.t-climber{color:#6a5e8a;background:rgba(106,94,138,.1);}
+.plant-tag.t-fruit{color:#c9844c;background:rgba(201,132,76,.1);}
+.plant-tag.t-vegetable{color:#5a8e3a;background:rgba(90,142,58,.1);}
+.plant-tag.t-tree{color:#5a7055;background:rgba(90,112,85,.1);}
+.plant-tag.t-grass{color:#7a9e6e;background:rgba(122,158,110,.1);}
+.plant-tag.t-extras{color:var(--gold);background:rgba(201,168,76,.1);}
+
+/* category section headers in plant grid */
+.cat-section{grid-column:1/-1;display:flex;align-items:center;gap:12px;margin-top:18px;margin-bottom:4px;}
+.cat-section:first-child{margin-top:0;}
+.cat-section-label{font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--moss);white-space:nowrap;}
+.cat-section-line{flex:1;height:1px;background:rgba(74,103,65,.15);}
+.cat-section-count{font-size:10px;font-weight:300;color:#9aae94;}
+
+.pc-customize{font-size:11px;font-weight:300;font-style:italic;color:var(--gold);padding:12px 16px;background:rgba(201,168,76,.06);border:1px solid var(--gold-dim);border-radius:4px;margin-bottom:20px;line-height:1.7;}
+
+/* quote sidebar */
+.quote-sidebar{background:var(--forest);border-radius:8px;padding:32px 28px;color:var(--parchment);position:sticky;top:90px;}
+.qs-head{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;margin-bottom:4px;}
+.qs-sub{font-size:11px;font-weight:300;color:var(--muted);letter-spacing:.08em;margin-bottom:24px;}
+.qs-space{display:flex;align-items:center;gap:10px;background:rgba(201,168,76,.1);border:1px solid var(--gold-dim);border-radius:4px;padding:12px 14px;margin-bottom:8px;}
+.qs-space-icon{font-size:20px;}
+.qs-space-name{font-size:13px;font-weight:400;color:var(--parchment);}
+.qs-space-plan{font-size:10px;font-weight:300;color:var(--muted);margin-top:1px;}
+.qs-theme-badge{font-size:9px;font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;padding-left:0;}
+.qs-count{font-size:12px;font-weight:300;color:var(--muted);margin-bottom:14px;}
+.qs-total{border-top:1px solid rgba(201,168,76,.14);padding-top:16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.qs-total .l{color:var(--parchment);font-weight:400;font-size:13px;}
+.qs-total .a{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold);}
+.next-btn{width:100%;padding:13px;background:var(--gold);color:var(--forest);font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;border:none;border-radius:2px;cursor:none;transition:all .2s;margin-bottom:8px;}
+.next-btn:hover{background:var(--gold-light);transform:translateY(-1px);}
+.back-btn{width:100%;padding:10px;background:none;color:var(--muted);font-family:'Jost',sans-serif;font-size:11px;font-weight:300;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(255,255,255,.09);border-radius:2px;cursor:none;transition:all .18s;}
+.back-btn:hover{border-color:rgba(255,255,255,.22);color:var(--parchment);}
+
+/* ── STEP 3: CONTACT ── */
+.step3-layout{display:grid;grid-template-columns:1fr 380px;gap:52px;align-items:start;}
+.cf-block{background:white;border-radius:8px;padding:44px 40px;border:1px solid rgba(74,103,65,.1);}
+.cf-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--forest);margin-bottom:6px;}
+.cf-sub{font-size:13px;font-weight:300;color:#7a8e74;margin-bottom:32px;line-height:1.7;}
+.cf-grid{display:flex;flex-direction:column;gap:16px;}
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.cf-field-label{font-size:10px;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:var(--moss);margin-bottom:7px;}
+
+/* ── THEMED FORM CONTROLS ── */
+.cf-inp{width:100%;padding:13px 16px;background:var(--cream);border:1px solid rgba(74,103,65,.18);border-radius:3px;font-family:'Jost',sans-serif;font-size:13px;font-weight:300;color:var(--forest);outline:none;transition:all .25s;}
+.cf-inp:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.1);background:white;}
+.cf-inp::placeholder{color:rgba(26,35,24,.3);font-style:italic;}
+.cf-sel{width:100%;padding:13px 16px;background:var(--cream);border:1px solid rgba(74,103,65,.18);border-radius:3px;font-family:'Jost',sans-serif;font-size:13px;font-weight:300;color:var(--forest);outline:none;transition:all .25s;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%234a6741' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:40px;}
+.cf-sel:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.1);background-color:white;}
+.cf-sel option{background:white;color:var(--forest);font-family:'Jost',sans-serif;padding:8px;}
+.cf-ta{width:100%;padding:13px 16px;background:var(--cream);border:1px solid rgba(74,103,65,.18);border-radius:3px;font-family:'Jost',sans-serif;font-size:13px;font-weight:300;color:var(--forest);outline:none;resize:none;height:90px;transition:all .25s;}
+.cf-ta:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.1);background:white;}
+.cf-ta::placeholder{color:rgba(26,35,24,.3);font-style:italic;}
+
+.cf-note-row{display:flex;align-items:flex-start;gap:10px;background:rgba(201,168,76,.07);border:1px solid var(--gold-dim);border-radius:4px;padding:14px 16px;}
+.cf-note-icon{font-size:18px;margin-top:1px;flex-shrink:0;}
+.cf-note-text{font-size:12px;font-weight:300;line-height:1.7;color:#5a7055;}
+.cf-submit{width:100%;padding:15px;background:var(--moss);color:white;font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;border:none;border-radius:3px;cursor:none;transition:all .22s;margin-top:4px;}
+.cf-submit:hover{background:#3d5936;transform:translateY(-1px);}
+
+/* ── QUOTE SUMMARY (step 3 sidebar) ── */
+.quote-summary{background:var(--forest);border-radius:8px;padding:32px 28px;color:var(--parchment);position:sticky;top:90px;}
+.qs3-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--gold-dim);}
+.qs3-space{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.qs3-space-icon{font-size:22px;}
+.qs3-space-info .qs3-name{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--parchment);}
+.qs3-space-info .qs3-plan{font-size:11px;color:var(--muted);}
+.qs3-theme{font-size:10px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;padding-left:32px;}
+.qs3-plants{margin-bottom:16px;max-height:280px;overflow-y:auto;}
+.qs3-plant-row{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:12px;font-weight:300;color:var(--sage);border-bottom:1px solid rgba(255,255,255,.04);}
+.qs3-plant-row .pe{font-size:14px;width:20px;text-align:center;}
+.qs3-totals{border-top:1px solid var(--gold-dim);padding-top:16px;display:flex;flex-direction:column;gap:8px;}
+.qs3-row{display:flex;justify-content:space-between;font-size:12px;}
+.qs3-row .l{color:var(--muted);}.qs3-row .a{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--parchment);}
+.qs3-row.total{padding-top:10px;border-top:1px solid rgba(201,168,76,.2);}
+.qs3-row.total .l{color:var(--parchment);font-weight:400;font-size:13px;}
+.qs3-row.total .a{font-size:28px;color:var(--gold);}
+.city-badge-row{margin-top:16px;display:flex;align-items:center;gap:8px;}
+.city-badge{font-size:10px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;padding:4px 12px;border-radius:100px;background:rgba(201,168,76,.12);border:1px solid var(--gold-dim);color:var(--gold);}
+
+/* ── STEP 4: CONFIRMATION ── */
+.confirmation{text-align:center;padding:80px 20px;max-width:560px;margin:0 auto;}
+.conf-icon{font-size:64px;margin-bottom:28px;animation:bounceIn .6s ease;}
+@keyframes bounceIn{0%{transform:scale(.5);opacity:0;}70%{transform:scale(1.1);}100%{transform:scale(1);opacity:1;}}
+.conf-title{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;color:var(--forest);margin-bottom:14px;}
+.conf-sub{font-size:15px;font-weight:300;line-height:1.8;color:#5a7055;margin-bottom:36px;}
+.conf-quote-ref{background:white;border:1px solid rgba(74,103,65,.15);border-radius:8px;padding:28px 32px;margin-bottom:32px;text-align:left;}
+.cqr-title{font-size:10px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--moss);margin-bottom:16px;}
+.cqr-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(74,103,65,.08);font-size:13px;}
+.cqr-row:last-child{border-bottom:none;}
+.cqr-row .l{font-weight:300;color:#5a7055;}.cqr-row .v{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--forest);}
+.cqr-row.total .v{font-size:24px;color:var(--moss);font-weight:400;}
+.conf-what-next{background:rgba(74,103,65,.06);border:1px solid rgba(74,103,65,.15);border-radius:8px;padding:24px 28px;margin-bottom:32px;text-align:left;}
+.cwn-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;color:var(--forest);margin-bottom:14px;}
+.cwn-step{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;font-size:13px;font-weight:300;color:#5a7055;line-height:1.6;}
+.cwn-num{width:22px;height:22px;border-radius:50%;background:var(--moss);color:white;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:1px;}
+.conf-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.conf-btn-pri{padding:13px 28px;background:var(--moss);color:white;font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;border:none;border-radius:3px;cursor:none;transition:all .2s;text-decoration:none;display:inline-block;}
+.conf-btn-pri:hover{background:#3d5936;}
+.conf-btn-sec{padding:13px 28px;background:none;color:var(--moss);font-family:'Jost',sans-serif;font-size:11px;font-weight:400;letter-spacing:.18em;text-transform:uppercase;border:1.5px solid rgba(74,103,65,.3);border-radius:3px;cursor:none;transition:all .2s;text-decoration:none;display:inline-block;}
+.conf-btn-sec:hover{border-color:var(--moss);}
+
+::-webkit-scrollbar{width:4px;height:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:rgba(74,103,65,.3);border-radius:100px;}
+
+@media(max-width:900px){
+  .header{padding:16px 22px;}.progress-wrap{padding:0 22px;}.city-bar{padding:10px 22px;}.builder-main{padding:40px 22px;}
+  .step3-layout{grid-template-columns:1fr;}
+  .quote-summary{position:static;}
+  .space-grid,.plan-tabs{grid-template-columns:1fr;}
+  .step2-layout{grid-template-columns:1fr;}
+  .quote-sidebar{position:static;}
+  .theme-grid{grid-template-columns:1fr;}
+  .cf-row{grid-template-columns:1fr;}
+  .prog-label{display:none;}
+}
+@media(min-width:901px) and (max-width:1100px){
+  .plan-tabs{grid-template-columns:repeat(3,1fr);}
+}
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur-ring" id="curRing"></div>
+
+<header class="header">
+  <a href="index.html" class="header-logo">
+    <div class="hl-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="rgba(201,168,76,.4)" stroke-width=".8"/><circle cx="5.5" cy="5.5" r="2" fill="rgba(201,168,76,.6)"/></svg></div>
+    <span class="hl-text">Root <em>&</em> Sky</span>
+  </a>
+  <a href="index.html" class="header-back">← Back to site</a>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-inner">
+    <button class="prog-step active" id="ps1" onclick="navToStep(1)"><div class="prog-num">1</div><div class="prog-label">Space & Theme</div></button>
+    <div class="prog-spacer"></div>
+    <button class="prog-step" id="ps2" onclick="navToStep(2)"><div class="prog-num">2</div><div class="prog-label">Choose Plan</div></button>
+    <div class="prog-spacer"></div>
+    <button class="prog-step" id="ps3" onclick="navToStep(3)"><div class="prog-num">3</div><div class="prog-label">Your Details</div></button>
+    <div class="prog-spacer"></div>
+    <button class="prog-step" id="ps4"><div class="prog-num">4</div><div class="prog-label">Confirmation</div></button>
+  </div>
+</div>
+
+<div class="city-bar">
+  <span class="city-bar-label">Your city</span>
+  <div class="city-toggle">
+    <button id="ctBangalore" onclick="setCity('bangalore')">Bengaluru</button>
+    <button id="ctTriCity" onclick="setCity('tricity')">Tricity</button>
+  </div>
+  <span style="font-size:11px;font-weight:300;color:var(--muted);margin-left:14px;" id="citySubLabel"></span>
+</div>
+
+<div class="builder-main">
+
+  <!-- STEP 1: SPACE TYPE -->
+  <div class="step-panel active" id="step1">
+    <div class="step-intro">
+      <div class="step-eye">Step 1</div>
+      <h1 class="step-title">What kind of space<br>are we <em>designing?</em></h1>
+      <p class="step-sub">Each space type has curated themes and plans designed specifically for it.</p>
+    </div>
+    <div class="space-grid">
+      <div class="space-card" onclick="selectSpace('balcony',this)">
+        <div class="sc-check">✓</div><span class="sc-icon">🏠</span>
+        <div class="sc-name">Balcony</div>
+        <div class="sc-desc">Apartment balcony — compact, beautiful. 4 themes to choose from.</div>
+        <div class="sc-range" id="sr-balcony">Plans from ₹9,999</div>
+      </div>
+      <div class="space-card" onclick="selectSpace('terrace',this)">
+        <div class="sc-check">✓</div><span class="sc-icon">🌄</span>
+        <div class="sc-name">Terrace</div>
+        <div class="sc-desc">Rooftop or large terrace — raised beds, irrigation, pergola plants.</div>
+        <div class="sc-range" id="sr-terrace">Plans from ₹14,999</div>
+      </div>
+      <div class="space-card" onclick="selectSpace('villa',this)">
+        <div class="sc-check">✓</div><span class="sc-icon">🏡</span>
+        <div class="sc-name">Villa / House</div>
+        <div class="sc-desc">Independent house — front/back yard, full landscape design.</div>
+        <div class="sc-range" id="sr-villa">Plans from ₹19,999</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 1B: THEME -->
+  <div class="step-panel" id="step1b">
+    <div class="step-intro">
+      <div class="step-eye" id="s1bEye">Step 1 — Balcony</div>
+      <h1 class="step-title" id="s1bTitle">Choose your <em>garden theme</em></h1>
+      <p class="step-sub">Each theme uses different plant types, materials, and design approaches. Pick the one that resonates with you.</p>
+    </div>
+    <button class="step-back" onclick="goToStep(1)">← Change space type</button>
+    <div class="theme-grid" id="themeGrid"></div>
+  </div>
+
+  <!-- STEP 2: PLAN + PLANT DISPLAY -->
+  <div class="step-panel" id="step2">
+    <div class="step-intro">
+      <div class="step-eye" id="s2Eye">Step 2</div>
+      <h1 class="step-title" id="s2Title">Pick your <em>plan</em></h1>
+      <p class="step-sub">Each plan comes with a curated selection of plants, pots, soil, and installation. Plants can be customised during the free site visit.</p>
+    </div>
+    <button class="step-back" onclick="goBackToTheme()">← Change theme</button>
+    <div class="plan-tabs" id="planTabs"></div>
+    <div class="step2-layout">
+      <div>
+        <div class="section-label" id="plantSectionLabel">Plants included in your plan</div>
+        <div class="plant-grid" id="plantGrid"></div>
+        <div class="pc-customize" id="customizeNote">Plants can be customised to your preference during the free site visit. This is your curated starting point — our designer will finalise the mix based on your space's light, ventilation, and taste.</div>
+      </div>
+      <div class="quote-sidebar">
+        <div class="qs-head">Your plan</div>
+        <div class="qs-sub">Summary</div>
+        <div class="qs-space">
+          <span class="qs-space-icon" id="qsIcon">🏠</span>
+          <div><div class="qs-space-name" id="qsName">Balcony</div><div class="qs-space-plan" id="qsPlan">Seed Plan</div></div>
+        </div>
+        <div class="qs-theme-badge" id="qsTheme"></div>
+        <div class="qs-count" id="qsCount">8 plants included</div>
+        <div class="qs-total"><span class="l">Plan price</span><span class="a" id="qsPrice">₹9,999</span></div>
+        <button class="next-btn" onclick="goToStep3()">Continue to details →</button>
+        <button class="back-btn" onclick="goBackToTheme()">← Change theme</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: CONTACT -->
+  <div class="step-panel" id="step3">
+    <div class="step-intro">
+      <div class="step-eye">Step 3</div>
+      <h1 class="step-title">Almost there —<br><em>your details</em></h1>
+      <p class="step-sub">We'll send your plan summary and reach out to schedule a free site visit. Plants can be swapped to your preference — this is your starting point.</p>
+    </div>
+    <div class="step3-layout">
+      <div class="cf-block">
+        <div class="cf-title">Your details</div>
+        <div class="cf-sub">Fill in below and submit. Our team contacts you within the hour.</div>
+        <div class="cf-grid">
+          <div><div class="cf-field-label">Full name *</div><input type="text" class="cf-inp" id="s3-name" placeholder="e.g. Priya Sharma"></div>
+          <div class="cf-row">
+            <div><div class="cf-field-label">Phone / WhatsApp *</div><input type="tel" class="cf-inp" id="s3-phone" placeholder="+91 98765 43210"></div>
+            <div><div class="cf-field-label">Email address *</div><input type="email" class="cf-inp" id="s3-email" placeholder="priya@email.com"></div>
+          </div>
+          <div class="cf-row">
+            <div><div class="cf-field-label">Approximate size</div><input type="text" class="cf-inp" id="s3-size" placeholder="e.g. 80 sq ft"></div>
+            <div><div class="cf-field-label">Your locality / area</div><input type="text" class="cf-inp" id="s3-area" placeholder="e.g. Koramangala"></div>
+          </div>
+          <div><div class="cf-field-label">Preferred visit time</div>
+            <select class="cf-sel" id="s3-timing"><option value="" disabled selected>Select a preferred time</option><option>Morning (9 am – 12 pm), any day</option><option>Afternoon (12 pm – 4 pm), any day</option><option>Evening (4 pm – 7 pm), any day</option><option>Weekends only</option><option>Flexible — call me to arrange</option></select>
+          </div>
+          <div><div class="cf-field-label">Plant preferences or notes</div><textarea class="cf-ta" id="s3-notes" placeholder="Any plants you love, colours you prefer, allergies, special requirements..."></textarea></div>
+          <div class="cf-note-row"><span class="cf-note-icon">✦</span><div class="cf-note-text">Your selected plan is a starting point. During the free site visit, our designer will finalise the exact plant mix based on your space's light, ventilation, and your personal taste.</div></div>
+          <button class="cf-submit" onclick="submitQuote()">Submit my garden request →</button>
+        </div>
+      </div>
+      <div class="quote-summary" id="quoteSummary3"></div>
+    </div>
+  </div>
+
+  <!-- STEP 4: CONFIRMATION -->
+  <div class="step-panel" id="step4">
+    <div class="confirmation">
+      <div class="conf-icon">🌿</div>
+      <div class="conf-title">Your request is in!</div>
+      <div class="conf-sub">Thank you — our team has received your garden request. We'll contact you within the hour to confirm your <strong>free site visit</strong>.</div>
+      <div class="conf-quote-ref" id="confQuoteRef"></div>
+      <div class="conf-what-next">
+        <div class="cwn-title">What happens next</div>
+        <div class="cwn-step"><div class="cwn-num">1</div>Our team reviews your plan and space details.</div>
+        <div class="cwn-step"><div class="cwn-num">2</div>We call or WhatsApp you within the hour to book your free site visit.</div>
+        <div class="cwn-step"><div class="cwn-num">3</div>We visit, measure, and finalise the exact plant selection together.</div>
+        <div class="cwn-step"><div class="cwn-num">4</div>Installation within 3 days. You simply enjoy your new garden.</div>
+      </div>
+      <div class="conf-actions">
+        <a href="index.html" class="conf-btn-pri">Back to homepage</a>
+        <a href="#" class="conf-btn-sec" id="confWaBtn">Chat on WhatsApp</a>
+        <button class="conf-btn-sec" onclick="startOver()" style="border:none;cursor:none;">Design another space</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ── CURSOR ── */
+const cur=document.getElementById('cur'),ring=document.getElementById('curRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
+
+const fmt=n=>'₹'+n.toLocaleString('en-IN');
+
+/* ══════════════════════════════════════════════
+   ALL PLAN DATA — PRE-DECIDED PLANTS PER PLAN
+   ══════════════════════════════════════════════ */
+
+const THEMES={
+  balcony:{
+    airpurify:{id:'airpurify',icon:'🌿',name:'Air Purifying & Foliage',
+      desc:'Low-maintenance greenery that cleans your air. NASA-approved plants for any light condition.',
+      plans:{
+        seed:{price_b:9999,price_t:9999,includes:'8 plants · Basic ceramic pots · Potting mix · Installation',
+          plants:[
+            {e:'🪴',n:'Money Plant (Golden Pothos)'},{e:'🌱',n:'Snake Plant'},{e:'🌿',n:'Spider Plant'},{e:'🍃',n:'Pothos (Marble Queen)'},
+            {e:'🌿',n:'Aglaonema (Green)'},{e:'🪴',n:'Jade Plant'},{e:'🌵',n:'Aloe Vera'},{e:'🌿',n:'Syngonium'}]},
+        bloom:{price_b:19999,price_t:16999,includes:'15 plants · Premium pots · Drip kit · Designer fee',badge:'Popular',
+          plants:[
+            {e:'🪴',n:'Money Plant (Golden Pothos)'},{e:'🌱',n:'Snake Plant (Laurentii)'},{e:'🌿',n:'Spider Plant'},{e:'🍃',n:'Pothos (Marble Queen)'},
+            {e:'🌿',n:'Aglaonema (Red Valentine)'},{e:'🪴',n:'ZZ Plant'},{e:'🌿',n:'Peace Lily'},{e:'🌿',n:'Rubber Plant'},
+            {e:'🍃',n:'Philodendron Heartleaf'},{e:'🌿',n:'Dracaena Marginata'},{e:'🪴',n:'Jade Plant'},{e:'🌵',n:'Aloe Vera'},
+            {e:'🌿',n:'Syngonium Pink'},{e:'🌿',n:'Fern (Boston)'},{e:'🌿',n:'Areca Palm (small)'}]},
+        canopy:{price_b:34999,price_t:28999,includes:'25+ plants · Custom planters · Auto-irrigation · Priority designer',
+          plants:[
+            {e:'🪴',n:'Money Plant (3 varieties)'},{e:'🌱',n:'Snake Plant (3 varieties)'},{e:'🌿',n:'Spider Plant (2)'},{e:'🍃',n:'Pothos (Golden + Marble + Neon)'},
+            {e:'🌿',n:'Aglaonema (Red + Pink + Green)'},{e:'🪴',n:'ZZ Plant'},{e:'🌿',n:'Peace Lily (2)'},{e:'🌿',n:'Rubber Plant (Burgundy)'},
+            {e:'🍃',n:'Philodendron (Heartleaf + Brasil)'},{e:'🌿',n:'Dracaena (Marginata + Fragrans)'},{e:'🪴',n:'Jade Plant'},{e:'🌵',n:'Aloe Vera'},
+            {e:'🌿',n:'Syngonium (Pink + White)'},{e:'🌿',n:'Fern (Boston + Maidenhair)'},{e:'🌴',n:'Areca Palm (2)'},
+            {e:'🌿',n:'Calathea Medallion'},{e:'🌿',n:'Dieffenbachia'}]},
+      }},
+    flowering:{id:'flowering',icon:'🌺',name:'Flowering & Color',
+      desc:'Vibrant blooms that transform your balcony. Best with 4+ hours of direct sunlight.',
+      plans:{
+        seed:{price_b:11999,price_t:9999,includes:'8 plants · Terracotta pots · Soil & setup · Trellis (1)',
+          plants:[
+            {e:'🌸',n:'Dwarf Bougainvillea'},{e:'🌺',n:'Hibiscus (Red)'},{e:'🌸',n:'Ixora (Dwarf)'},{e:'🧡',n:'Crossandra'},
+            {e:'🌺',n:'Adenium (Desert Rose)'},{e:'🌸',n:'Petunia (Mixed)'},{e:'🌺',n:'Balsam'},{e:'🌿',n:'Portulaca (Moss Rose)'}]},
+        bloom:{price_b:22999,price_t:18999,includes:'15 plants · Premium pots · Drip kit · Trellis · Designer fee',badge:'Popular',
+          plants:[
+            {e:'🌸',n:'Dwarf Bougainvillea (2 colors)'},{e:'🌺',n:'Hibiscus (Red + Yellow)'},{e:'🌸',n:'Ixora (Dwarf, 2)'},{e:'🧡',n:'Crossandra'},
+            {e:'🌺',n:'Adenium (Grafted)'},{e:'🌸',n:'Petunia (Mixed, 3)'},{e:'❤️',n:'Anthurium'},{e:'🌺',n:'Balsam'},
+            {e:'🌿',n:'Portulaca (Mixed)'},{e:'🌹',n:'Miniature Rose'},{e:'🌼',n:'Marigold (2)'},{e:'🌸',n:'Geranium'},
+            {e:'🌺',n:'Vinca (Periwinkle)'},{e:'🌸',n:'Zinnia'},{e:'🌿',n:'Money Plant (filler)'}]},
+        canopy:{price_b:38999,price_t:32999,includes:'25+ plants · Designer pots · Auto-irrigation · Wall trellis · Premium design',
+          plants:[
+            {e:'🌸',n:'Dwarf Bougainvillea (3 colors)'},{e:'🌺',n:'Hibiscus (3 varieties)'},{e:'🌸',n:'Ixora (3)'},{e:'🧡',n:'Crossandra (2)'},
+            {e:'🌺',n:'Adenium (2 grafted)'},{e:'🌸',n:'Petunia (cascading, 4)'},{e:'❤️',n:'Anthurium (2)'},{e:'🪻',n:'Orchid (Phalaenopsis)'},
+            {e:'🌹',n:'Miniature Rose (3)'},{e:'🌼',n:'Marigold (3)'},{e:'🌸',n:'Geranium (2)'},{e:'🌺',n:'Vinca (3)'},
+            {e:'🌸',n:'Zinnia (2)'},{e:'🌿',n:'Portulaca (Mixed, 3)'},{e:'🌺',n:'Balsam (2)'},{e:'🌿',n:'Money Plant (trailing)'},
+            {e:'🌿',n:'Spider Plant (hanging)'}]},
+      }},
+    herbs:{id:'herbs',icon:'🌱',name:'Herbs & Kitchen Garden',
+      desc:'Grow your own fresh herbs and greens. Functional, aromatic, and deeply satisfying.',
+      plans:{
+        seed:{price_b:9999,price_t:9999,includes:'10 plants · Grow bags · Organic soil · Labels · Setup',
+          plants:[
+            {e:'🌿',n:'Tulsi (Holy Basil)'},{e:'🌿',n:'Mint'},{e:'🌿',n:'Coriander'},{e:'🌿',n:'Curry Leaf'},
+            {e:'🌶️',n:'Green Chilli'},{e:'🍅',n:'Cherry Tomato'},{e:'🌿',n:'Methi (Fenugreek)'},{e:'🌿',n:'Spinach (Palak)'},
+            {e:'🌿',n:'Spring Onion'},{e:'🌿',n:'Lemongrass'}]},
+        bloom:{price_b:17999,price_t:14999,includes:'18 plants · Premium grow bags · Drip kit · Organic compost · Designer',badge:'Popular',
+          plants:[
+            {e:'🌿',n:'Tulsi (Holy Basil)'},{e:'🌿',n:'Sweet Basil'},{e:'🌿',n:'Mint (2 varieties)'},{e:'🌿',n:'Coriander'},
+            {e:'🌿',n:'Curry Leaf'},{e:'🌶️',n:'Green Chilli'},{e:'🌶️',n:'Red Chilli'},{e:'🍅',n:'Cherry Tomato (2)'},
+            {e:'🌿',n:'Methi'},{e:'🌿',n:'Spinach'},{e:'🌿',n:'Spring Onion'},{e:'🌿',n:'Lemongrass'},
+            {e:'🌿',n:'Rosemary'},{e:'🌿',n:'Thyme'},{e:'🥒',n:'Capsicum'},{e:'🌿',n:'Ajwain'},
+            {e:'🌿',n:'Lettuce'},{e:'🌿',n:'Microgreens tray'}]},
+        canopy:{price_b:29999,price_t:24999,includes:'28+ plants · Raised grow system · Auto-drip · Compost · Trellis · Premium design',
+          plants:[
+            {e:'🌿',n:'Tulsi (3 varieties)'},{e:'🌿',n:'Sweet Basil + Thai Basil'},{e:'🌿',n:'Mint (3 varieties)'},{e:'🌿',n:'Coriander (2)'},
+            {e:'🌿',n:'Curry Leaf (large)'},{e:'🌶️',n:'Chilli (3 varieties)'},{e:'🍅',n:'Cherry Tomato (3)'},{e:'🌿',n:'Methi'},
+            {e:'🌿',n:'Spinach (2 varieties)'},{e:'🌿',n:'Spring Onion (2)'},{e:'🌿',n:'Lemongrass (2)'},{e:'🌿',n:'Rosemary'},
+            {e:'🌿',n:'Thyme'},{e:'🥒',n:'Capsicum (2)'},{e:'🌿',n:'Ajwain'},{e:'🌿',n:'Lettuce (2 varieties)'},
+            {e:'🥬',n:'Kale'},{e:'🫑',n:'Brinjal (dwarf)'},{e:'🌿',n:'Microgreens (3 trays)'},{e:'🌿',n:'Oregano'},
+            {e:'🌿',n:'Sage'}]},
+      }},
+    succulents:{id:'succulents',icon:'🪴',name:'Succulents & Cacti',
+      desc:'Minimal watering, maximum style. Perfect for sunny spots and frequent travellers.',
+      plans:{
+        seed:{price_b:9999,price_t:9999,includes:'10 plants · Ceramic bowls · Succulent soil · Pebble top · Setup',
+          plants:[
+            {e:'🌸',n:'Echeveria (Green)'},{e:'🪴',n:'Jade Plant'},{e:'🌵',n:'Aloe Vera'},{e:'🌵',n:'Cactus (Globe)'},
+            {e:'🪴',n:'Haworthia'},{e:'🌿',n:'Crassula (Mini)'},{e:'🌵',n:'Cactus (Column)'},{e:'🌸',n:'Sedum'},
+            {e:'🪴',n:'Gasteria'},{e:'🌵',n:'Euphorbia'}]},
+        bloom:{price_b:18999,price_t:15999,includes:'18 plants · Designer ceramics · Dish gardens · Hanging planter · Setup',badge:'Popular',
+          plants:[
+            {e:'🌸',n:'Echeveria (3 colors)'},{e:'🪴',n:'Jade Plant (large)'},{e:'🌵',n:'Aloe Vera'},{e:'🌵',n:'Cactus assortment (4)'},
+            {e:'🪴',n:'Haworthia (2)'},{e:'🌿',n:'Crassula (3 varieties)'},{e:'📿',n:'String of Pearls'},{e:'🌸',n:'Sedum (2)'},
+            {e:'🪴',n:'Gasteria'},{e:'🌵',n:'Euphorbia'},{e:'🌸',n:'Echeveria Lola'},{e:'🪴',n:'Lithops (Living Stones)'},
+            {e:'🌿',n:'Senecio (Blue Chalk)'},{e:'🌸',n:'Graptoveria'}]},
+        canopy:{price_b:31999,price_t:26999,includes:'28+ plants · Premium ceramics · Vertical succulent frame · Pebble garden · Designer',
+          plants:[
+            {e:'🌸',n:'Echeveria (6 varieties)'},{e:'🪴',n:'Jade Plant (tree form)'},{e:'🌵',n:'Aloe (2 varieties)'},{e:'🌵',n:'Cactus collection (8)'},
+            {e:'🪴',n:'Haworthia (3)'},{e:'🌿',n:'Crassula (4 varieties)'},{e:'📿',n:'String of Pearls (2)'},{e:'📿',n:'String of Bananas'},
+            {e:'🌸',n:'Sedum (3)'},{e:'🪴',n:'Gasteria (2)'},{e:'🌵',n:'Euphorbia (2)'},{e:'🌸',n:'Echeveria Lola'},
+            {e:'🪴',n:'Lithops (3)'},{e:'🌿',n:'Senecio (2)'},{e:'🌸',n:'Graptoveria (2)'},{e:'🌵',n:'Cereus (Night Queen)'}]},
+      }},
+  },
+  terrace:{
+    tropical:{id:'tropical',icon:'🌴',name:'Tropical Paradise',
+      desc:'Dramatic palms, lush foliage, resort vibes. Best in Bengaluru year-round; seasonal in Tricity.',
+      plans:{
+        seed:{price_b:19999,price_t:16999,includes:'12 plants · Large FRP planters · Potting mix · Installation',
+          plants:[
+            {e:'🌴',n:'Areca Palm (4 ft)'},{e:'🌿',n:'Monstera Deliciosa'},{e:'🍌',n:'Banana Plant (Dwarf)'},{e:'🍃',n:'Colocasia (Elephant Ear)'},
+            {e:'🌿',n:'Philodendron Selloum'},{e:'🌺',n:'Heliconia (small)'},{e:'🌼',n:'Plumeria / Frangipani'},{e:'🌿',n:'Cordyline (Red)'},
+            {e:'🪴',n:'Money Plant (large, trailing)'},{e:'🌿',n:'Dracaena (Tall)'},{e:'🌿',n:'Croton (colorful)'},{e:'🌿',n:'Song of India'}]},
+        bloom:{price_b:39999,price_t:32999,includes:'22 plants · Premium planters · Drip system · Pergola plants · Designer',badge:'Popular',
+          plants:[
+            {e:'🌴',n:'Areca Palm (5 ft, 2)'},{e:'🌿',n:'Monstera Deliciosa (2)'},{e:'🦜',n:'Bird of Paradise'},{e:'🍌',n:'Banana Plant (2)'},
+            {e:'🍃',n:'Colocasia (2 varieties)'},{e:'🌿',n:'Philodendron Selloum'},{e:'🌺',n:'Heliconia (2)'},{e:'🌼',n:'Plumeria (2)'},
+            {e:'🌿',n:'Cordyline (Red + Pink)'},{e:'🪴',n:'Money Plant (large)'},{e:'🌿',n:'Dracaena (2 varieties)'},{e:'🌿',n:'Croton (3)'},
+            {e:'🌿',n:'Song of India'},{e:'🌿',n:'Rubber Plant (Burgundy)'},{e:'🌿',n:'Fern (Boston, 2)'},{e:'🌿',n:'Calathea'},
+            {e:'🌿',n:'Aglaonema (Red)'},{e:'🌺',n:'Anthurium'}]},
+        canopy:{price_b:64999,price_t:54999,includes:'35+ plants · Custom planters · Auto-irrigation · Seating area · Architect design',
+          plants:[
+            {e:'🌴',n:'Areca Palm (6 ft, 3)'},{e:'🌿',n:'Monstera (3)'},{e:'🦜',n:'Bird of Paradise (2)'},{e:'🍌',n:'Banana (3 varieties)'},
+            {e:'🍃',n:'Colocasia (3)'},{e:'🌿',n:'Philodendron (3 varieties)'},{e:'🌺',n:'Heliconia (3)'},{e:'🌼',n:'Plumeria (3)'},
+            {e:'🌴',n:'Traveller\'s Palm'},{e:'🌿',n:'Cordyline (3)'},{e:'🌿',n:'Dracaena (3)'},{e:'🌿',n:'Croton (5)'},
+            {e:'🌿',n:'Rubber Plant (2)'},{e:'🌿',n:'Fern collection (4)'},{e:'🌿',n:'Calathea (2)'},{e:'🌿',n:'Aglaonema (3)'},
+            {e:'🌺',n:'Anthurium (2)'},{e:'🌺',n:'Hibiscus (2)'},{e:'🪴',n:'Large Money Plant (3)'}]},
+      }},
+    kitchen:{id:'kitchen',icon:'🥬',name:'Kitchen & Edible Garden',
+      desc:'Grow vegetables, fruits, and herbs on your terrace. Raised beds, drip irrigation, fresh produce.',
+      plans:{
+        seed:{price_b:17999,price_t:14999,includes:'15 plants · Grow bags · Raised bed (1) · Organic soil · Drip kit',
+          plants:[
+            {e:'🍅',n:'Tomato (Hybrid, 2)'},{e:'🌶️',n:'Chilli (Green + Red)'},{e:'🥒',n:'Capsicum'},{e:'🌿',n:'Spinach (2)'},
+            {e:'🫘',n:'Beans (Climbing)'},{e:'🌿',n:'Coriander'},{e:'🌿',n:'Mint'},{e:'🌿',n:'Tulsi'},
+            {e:'🌿',n:'Curry Leaf'},{e:'🌿',n:'Methi'},{e:'🌿',n:'Lemongrass'},{e:'🌿',n:'Spring Onion'},
+            {e:'🍋',n:'Dwarf Lemon (grafted)'},{e:'🌿',n:'Ajwain'},{e:'🌿',n:'Lettuce'}]},
+        bloom:{price_b:34999,price_t:28999,includes:'28 plants · Grow bags · Raised beds (3) · Drip system · Fruit saplings · Designer',badge:'Popular',
+          plants:[
+            {e:'🍅',n:'Tomato (3 varieties)'},{e:'🌶️',n:'Chilli (3 varieties)'},{e:'🥒',n:'Capsicum (2 colors)'},{e:'🌿',n:'Spinach (2)'},
+            {e:'🫘',n:'Beans (2 types)'},{e:'🍆',n:'Brinjal (2)'},{e:'🥬',n:'Kale'},{e:'🥒',n:'Cucumber'},
+            {e:'🌿',n:'Coriander (2)'},{e:'🌿',n:'Mint (2 varieties)'},{e:'🌿',n:'Tulsi (2 varieties)'},{e:'🌿',n:'Curry Leaf (large)'},
+            {e:'🌿',n:'Methi'},{e:'🌿',n:'Lemongrass (2)'},{e:'🌿',n:'Rosemary'},{e:'🌿',n:'Thyme'},
+            {e:'🍋',n:'Dwarf Lemon (grafted)'},{e:'🍈',n:'Dwarf Guava (grafted)'},{e:'🌿',n:'Spring Onion (2)'},{e:'🌿',n:'Lettuce (2)'},
+            {e:'🌿',n:'Microgreens trays (3)'}]},
+        canopy:{price_b:56999,price_t:46999,includes:'40+ plants · Full raised bed system · Auto-drip · Fruit trees · Compost bin · Designer',
+          plants:[
+            {e:'🍅',n:'Tomato (5 varieties)'},{e:'🌶️',n:'Chilli (4 varieties)'},{e:'🥒',n:'Capsicum (3)'},{e:'🌿',n:'Spinach (3)'},
+            {e:'🫘',n:'Beans (3 types)'},{e:'🍆',n:'Brinjal (3)'},{e:'🥬',n:'Kale (2)'},{e:'🥒',n:'Cucumber (2)'},
+            {e:'🎃',n:'Bottle Gourd'},{e:'🌿',n:'Okra / Bhindi'},{e:'🌿',n:'Full herb collection (12 types)'},
+            {e:'🍋',n:'Dwarf Lemon'},{e:'🍈',n:'Dwarf Guava'},{e:'🍊',n:'Dwarf Orange'},{e:'🥭',n:'Papaya'},
+            {e:'🌿',n:'Moringa / Drumstick'},{e:'🌿',n:'Microgreens (5 trays)'},{e:'🌿',n:'Compost bin + starter'}]},
+      }},
+    floral:{id:'floral',icon:'🌸',name:'Flowering Retreat',
+      desc:'Fragrant, colorful rooftop escape — roses, jasmine, bougainvillea, and trailing blooms.',
+      plans:{
+        seed:{price_b:17999,price_t:14999,includes:'12 plants · Terracotta pots · Trellis (2) · Soil · Setup',
+          plants:[
+            {e:'🌺',n:'Bougainvillea (Pink)'},{e:'🌸',n:'Jasmine (Chameli)'},{e:'🌺',n:'Hibiscus (Red)'},{e:'🌹',n:'Rose (Hybrid Tea)'},
+            {e:'🌸',n:'Ixora'},{e:'🌺',n:'Adenium'},{e:'🌸',n:'Mogra'},{e:'🌿',n:'Portulaca (Mixed)'},
+            {e:'🌺',n:'Madhumalti / Rangoon Creeper'},{e:'🌸',n:'Crossandra'},{e:'🌼',n:'Marigold (2)'},{e:'🌿',n:'Money Plant (filler)'}]},
+        bloom:{price_b:36999,price_t:29999,includes:'22 plants · Premium pots · Drip · Wall trellis · Pergola plants · Designer',badge:'Popular',
+          plants:[
+            {e:'🌺',n:'Bougainvillea (3 colors)'},{e:'🌸',n:'Jasmine (2)'},{e:'🌺',n:'Hibiscus (3 varieties)'},{e:'🌹',n:'Rose (4 varieties)'},
+            {e:'🌸',n:'Ixora (3)'},{e:'🌺',n:'Adenium (2 grafted)'},{e:'🌸',n:'Mogra (2)'},{e:'🌿',n:'Portulaca (Mixed, 3)'},
+            {e:'🌺',n:'Madhumalti'},{e:'🌸',n:'Crossandra (2)'},{e:'🌼',n:'Marigold (3)'},{e:'🌸',n:'Petunia (cascading, 3)'},
+            {e:'🌼',n:'Plumeria'},{e:'🌸',n:'Zinnia (2)'}]},
+        canopy:{price_b:59999,price_t:49999,includes:'35+ plants · Designer pots · Auto-irrigation · Pergola · Fragrance garden · Architect',
+          plants:[
+            {e:'🌺',n:'Bougainvillea (5 colors)'},{e:'🌸',n:'Jasmine (3 varieties)'},{e:'🌺',n:'Hibiscus (5 varieties)'},{e:'🌹',n:'Rose (8 varieties)'},
+            {e:'🌸',n:'Ixora (4)'},{e:'🌺',n:'Adenium (3)'},{e:'🌸',n:'Mogra (3)'},{e:'🌿',n:'Portulaca (5)'},
+            {e:'🌺',n:'Madhumalti (2)'},{e:'🌸',n:'Crossandra (3)'},{e:'🌼',n:'Plumeria (2)'},{e:'🌸',n:'Petunia (6)'},
+            {e:'🌸',n:'Zinnia (3)'},{e:'🌺',n:'Dahlia (2)'},{e:'🤍',n:'Tuberose'},{e:'🌼',n:'Marigold (4)'}]},
+      }},
+    zen:{id:'zen',icon:'🎋',name:'Zen & Minimal',
+      desc:'Clean lines, bamboo, ornamental grasses, pebble gardens. Meditative and low-maintenance.',
+      plans:{
+        seed:{price_b:22999,price_t:18999,includes:'10 plants · Matte ceramic pots · Pebble layer · Setup',
+          plants:[
+            {e:'🎋',n:'Clumping Bamboo'},{e:'🌱',n:'Snake Plant (Tall, 2)'},{e:'🌿',n:'Ornamental Grass (Pennisetum)'},
+            {e:'🌿',n:'Fern (Sword)'},{e:'🌿',n:'Peace Lily'},{e:'🪴',n:'Lucky Bamboo (arrangement)'},
+            {e:'🌿',n:'Mondo Grass'},{e:'🌿',n:'ZZ Plant'},{e:'🌸',n:'Echeveria (dish garden)'},{e:'🌿',n:'Asparagus Fern'}]},
+        bloom:{price_b:44999,price_t:36999,includes:'16 plants · Designer ceramics · Pebble garden · Water feature · Deck tiles · Designer',badge:'Popular',
+          plants:[
+            {e:'🎋',n:'Clumping Bamboo (2)'},{e:'🌱',n:'Snake Plant (3 varieties)'},{e:'🌿',n:'Ornamental Grass (3)'},
+            {e:'🌿',n:'Fern (3 varieties)'},{e:'🌿',n:'Peace Lily (2)'},{e:'🪴',n:'Lucky Bamboo (large)'},
+            {e:'🌿',n:'Mondo Grass (3)'},{e:'🌿',n:'ZZ Plant (2)'},{e:'🌸',n:'Echeveria arrangement'},
+            {e:'🌿',n:'Japanese Sago Palm (Cycas)'},{e:'🌿',n:'Asparagus Fern (2)'},{e:'🪴',n:'Bonsai (Ficus)'}]},
+        canopy:{price_b:74999,price_t:59999,includes:'24+ plants · Concrete planters · Full pebble garden · Water feature · Bamboo screen · Architect',
+          plants:[
+            {e:'🎋',n:'Clumping Bamboo (4)'},{e:'🌱',n:'Snake Plant (5 varieties)'},{e:'🌿',n:'Ornamental Grass (6)'},
+            {e:'🌿',n:'Fern collection (5)'},{e:'🌿',n:'Peace Lily (3)'},{e:'🪴',n:'Lucky Bamboo (xl)'},
+            {e:'🌿',n:'Mondo Grass (6)'},{e:'🌿',n:'ZZ Plant (3)'},{e:'🌸',n:'Echeveria collection'},
+            {e:'🌿',n:'Sago Palm (2)'},{e:'🪴',n:'Bonsai (2)'},{e:'🌿',n:'Japanese Maple (if climate allows)'},
+            {e:'🌿',n:'Asparagus Fern (3)'},{e:'🌿',n:'Cast Iron Plant'}]},
+      }},
+  },
+  villa:{
+    lush:{id:'lush',icon:'🌳',name:'Lush Landscape',
+      desc:'Full garden — shade trees, hedges, flowering shrubs, lawn, ground cover, pathways.',
+      plans:{
+        seed:{price_b:29999,price_t:24999,includes:'18 plants + lawn (up to 200 sq ft) · Basic landscape · Designer visit',
+          plants:[
+            {e:'🌳',n:'Ashoka Tree (2)'},{e:'🌺',n:'Bougainvillea (hedge, 3)'},{e:'🌿',n:'Duranta (hedge, 4)'},
+            {e:'🌸',n:'Ixora (3)'},{e:'🌿',n:'Lantana (ground cover, 3)'},{e:'🌼',n:'Marigold (seasonal, 3)'},
+            {e:'🌿',n:'Lawn grass (Bermuda, up to 200 sq ft)'}]},
+        bloom:{price_b:54999,price_t:44999,includes:'35 plants + lawn (up to 500 sq ft) · Full yard · Irrigation · Designer',badge:'Popular',
+          plants:[
+            {e:'🌳',n:'Ashoka Tree (3)'},{e:'🌳',n:'Neem'},{e:'🌺',n:'Bougainvillea (5)'},{e:'🌿',n:'Ficus hedge (6)'},
+            {e:'🌿',n:'Duranta (6)'},{e:'🌸',n:'Ixora (5)'},{e:'🌺',n:'Hibiscus (3)'},{e:'🌿',n:'Lantana (5)'},
+            {e:'🌼',n:'Marigold (seasonal, 6)'},{e:'🌸',n:'Jasmine (2)'},{e:'🌿',n:'Wedelia ground cover'},
+            {e:'🌿',n:'Lawn grass (Bermuda/Korean, up to 500 sq ft)'},{e:'🌿',n:'Drip irrigation system'}]},
+        canopy:{price_b:99999,price_t:84999,includes:'60+ plants + lawn (up to 1500 sq ft) · Complete landscape · Auto-irrigation · Pathways · Architect',
+          plants:[
+            {e:'🌳',n:'Gulmohar (specimen)'},{e:'🌳',n:'Ashoka (4)'},{e:'🌳',n:'Neem (2)'},{e:'🌺',n:'Bougainvillea (8)'},
+            {e:'🌿',n:'Ficus hedge (12)'},{e:'🌿',n:'Duranta (10)'},{e:'🌸',n:'Ixora (8)'},{e:'🌺',n:'Hibiscus (5)'},
+            {e:'🌹',n:'Rose (6 varieties)'},{e:'🌸',n:'Jasmine (4)'},{e:'🌿',n:'Lantana (8)'},{e:'🌿',n:'Wedelia (large patch)'},
+            {e:'🌼',n:'Seasonal flowers (10+)'},{e:'🌿',n:'Lawn (Korean, up to 1500 sq ft)'},
+            {e:'🌿',n:'Auto-irrigation · Stone pathways · Garden lighting'}]},
+      }},
+    tropical:{id:'tropical',icon:'🌴',name:'Tropical Estate',
+      desc:'Hotel-luxury — tall palms, dramatic specimens, lush tropical foliage throughout.',
+      plans:{
+        seed:{price_b:34999,price_t:29999,includes:'12 specimen plants · Large FRP urns · Landscape · Designer',
+          plants:[
+            {e:'🌴',n:'Areca Palm (6 ft, 2)'},{e:'🦜',n:'Bird of Paradise'},{e:'🌼',n:'Frangipani / Plumeria'},
+            {e:'🍌',n:'Banana (Dwarf, 2)'},{e:'🌿',n:'Monstera (large)'},{e:'🌺',n:'Heliconia'},{e:'🍃',n:'Colocasia (2)'},
+            {e:'🌿',n:'Croton (3)'},{e:'🌿',n:'Cordyline (2)'}]},
+        bloom:{price_b:64999,price_t:54999,includes:'28 plants · Premium planters · Irrigation · Landscape · Designer',badge:'Popular',
+          plants:[
+            {e:'🌴',n:'Areca Palm (7 ft, 3)'},{e:'🌴',n:'Foxtail Palm'},{e:'🦜',n:'Bird of Paradise (2)'},{e:'🌼',n:'Plumeria (3)'},
+            {e:'🍌',n:'Banana (3)'},{e:'🌿',n:'Monstera (3)'},{e:'🌺',n:'Heliconia (3)'},{e:'🍃',n:'Colocasia (3)'},
+            {e:'🌿',n:'Traveller\'s Palm'},{e:'🌿',n:'Philodendron (3)'},{e:'🌿',n:'Croton (5)'},{e:'🌿',n:'Cordyline (3)'},
+            {e:'🌿',n:'Fern collection (4)'},{e:'🌿',n:'Drip irrigation system'}]},
+        canopy:{price_b:119999,price_t:99999,includes:'50+ plants · Custom urns · Auto-irrigation · Full tropical landscape · Architect',
+          plants:[
+            {e:'🌴',n:'Royal Palm (2)'},{e:'🌴',n:'Foxtail Palm (2)'},{e:'🌴',n:'Areca Palm (6)'},{e:'🦜',n:'Bird of Paradise (4)'},
+            {e:'🌼',n:'Plumeria (5)'},{e:'🍌',n:'Banana cluster (5)'},{e:'🌿',n:'Monstera (5)'},{e:'🌺',n:'Heliconia (5)'},
+            {e:'🍃',n:'Colocasia (5)'},{e:'🌿',n:'Traveller\'s Palm (2)'},{e:'🌿',n:'Philodendron (5)'},{e:'🌿',n:'Croton (8)'},
+            {e:'🌿',n:'Cordyline (5)'},{e:'🌿',n:'Fern collection (8)'},{e:'🌿',n:'Calathea (3)'},{e:'🌺',n:'Hibiscus (4)'},
+            {e:'🌿',n:'Auto-irrigation · Landscape lighting · Stone edging'}]},
+      }},
+    native:{id:'native',icon:'🌾',name:'Native & Low-Water',
+      desc:'Eco-friendly, drought-resistant with native Indian species. Minimal water, maximum beauty.',
+      plans:{
+        seed:{price_b:24999,price_t:19999,includes:'15 plants · Terracotta · Mulch · Basic landscape · Setup',
+          plants:[
+            {e:'🌳',n:'Neem (sapling)'},{e:'🌿',n:'Moringa / Drumstick'},{e:'🌿',n:'Curry Leaf tree'},
+            {e:'🌸',n:'Plumbago (Blue)'},{e:'🌵',n:'Agave americana'},{e:'🌿',n:'Portulaca (Mixed, 3)'},
+            {e:'🌿',n:'Ornamental Grass (Pennisetum, 2)'},{e:'🌿',n:'Lantana (3)'},{e:'🌿',n:'Wedelia ground cover (2)'},
+            {e:'🌿',n:'Bougainvillea'}]},
+        bloom:{price_b:44999,price_t:36999,includes:'30 plants · Mulch garden · Pebble paths · Irrigation · Designer',badge:'Popular',
+          plants:[
+            {e:'🌳',n:'Neem (2)'},{e:'🌿',n:'Moringa (2)'},{e:'🌿',n:'Curry Leaf (large)'},{e:'🌳',n:'Cassia / Amaltas'},
+            {e:'🌸',n:'Plumbago (4)'},{e:'🌵',n:'Agave (3)'},{e:'🌿',n:'Portulaca (6)'},{e:'🌿',n:'Ornamental Grass (5)'},
+            {e:'🌿',n:'Lantana (5)'},{e:'🌿',n:'Wedelia (large patch)'},{e:'🌺',n:'Bougainvillea (3)'},
+            {e:'🌸',n:'Native wildflower mix'},{e:'🌿',n:'Drip irrigation system'}]},
+        canopy:{price_b:79999,price_t:64999,includes:'55+ plants · Full native landscape · Auto-drip · Mulch · Pathways · Architect',
+          plants:[
+            {e:'🌳',n:'Neem (3)'},{e:'🌿',n:'Moringa (3)'},{e:'🌿',n:'Curry Leaf (2)'},{e:'🌳',n:'Cassia (2)'},
+            {e:'🌳',n:'Pongamia / Karanj'},{e:'🌸',n:'Plumbago (8)'},{e:'🌵',n:'Agave (5)'},{e:'🌿',n:'Portulaca (10)'},
+            {e:'🌿',n:'Ornamental Grass (10)'},{e:'🌿',n:'Lantana (8)'},{e:'🌿',n:'Wedelia (xl patch)'},
+            {e:'🌺',n:'Bougainvillea (6)'},{e:'🌸',n:'Wildflower meadow'},{e:'🌿',n:'Pebble garden sections'},
+            {e:'🌿',n:'Auto-irrigation · Mulch pathways · Stone borders'}]},
+      }},
+    cottage:{id:'cottage',icon:'🌹',name:'English Cottage',
+      desc:'Roses, lavender, dahlias, climbing vines. Romantic and classic — best in Tricity\'s cooler climate.',
+      plans:{
+        seed:{price_b:29999,price_t:24999,includes:'15 plants · Terracotta · Garden arch (1) · Soil · Setup',
+          plants:[
+            {e:'🌹',n:'Rose (Hybrid Tea, 3 varieties)'},{e:'🌹',n:'Climbing Rose'},{e:'🌸',n:'Dahlia (2)'},
+            {e:'🌼',n:'Gerbera (2)'},{e:'🌸',n:'Petunia (3)'},{e:'🌿',n:'Salvia (2)'},{e:'🌿',n:'Alyssum (border)'},
+            {e:'🌸',n:'Dianthus'}]},
+        bloom:{price_b:54999,price_t:44999,includes:'30 plants · Premium pots · Garden arches (2) · Trellis · Irrigation · Designer',badge:'Popular',
+          plants:[
+            {e:'🌹',n:'Rose (6 varieties)'},{e:'🌹',n:'Climbing Rose (2)'},{e:'🌸',n:'Dahlia (4)'},{e:'🌼',n:'Gerbera (3)'},
+            {e:'🌸',n:'Petunia (5)'},{e:'🌿',n:'Salvia (4)'},{e:'🌿',n:'Alyssum (border, 4)'},{e:'🌸',n:'Dianthus (3)'},
+            {e:'💜',n:'Hydrangea'},{e:'🌸',n:'Foxglove'},{e:'🌿',n:'Lavender (2 — Tricity suited)'},
+            {e:'🌸',n:'Delphinium'},{e:'🌸',n:'Snapdragon (3)'},{e:'🌿',n:'Drip irrigation'}]},
+        canopy:{price_b:94999,price_t:79999,includes:'55+ plants · Full cottage garden · Arches · Pathways · Seating · Architect',
+          plants:[
+            {e:'🌹',n:'Rose (12 varieties inc. David Austin)'},{e:'🌹',n:'Climbing Rose (4)'},{e:'🌸',n:'Dahlia (8)'},
+            {e:'🌼',n:'Gerbera (5)'},{e:'🌸',n:'Petunia (8)'},{e:'🌿',n:'Salvia (6)'},{e:'🌿',n:'Alyssum (borders)'},
+            {e:'🌸',n:'Dianthus (5)'},{e:'💜',n:'Hydrangea (3)'},{e:'🌸',n:'Foxglove (3)'},{e:'🌿',n:'Lavender (4)'},
+            {e:'🌸',n:'Delphinium (3)'},{e:'🌸',n:'Snapdragon (5)'},{e:'🌿',n:'Wisteria (climber)'},
+            {e:'🌿',n:'Garden arches · Stone pathways · Auto-irrigation · Seating nook'}]},
+      }},
+  },
+};
+
+const SPACE_META={
+  balcony:{icon:'🏠',label:'Balcony'},
+  terrace:{icon:'🌄',label:'Terrace'},
+  villa:{icon:'🏡',label:'Villa / House'},
+};
+
+/* ── STATE ── */
+let city=new URLSearchParams(location.search).get('city')||localStorage.getItem('rs_city')||'bangalore';
+let currentStep=1,selectedSpace=null,selectedTheme=null,selectedTier=null;
+
+/* ── CITY ── */
+function setCity(c){
+  city=c;localStorage.setItem('rs_city',c);
+  document.getElementById('ctBangalore').classList.toggle('active',c==='bangalore');
+  document.getElementById('ctTriCity').classList.toggle('active',c==='tricity');
+  document.getElementById('citySubLabel').textContent=c==='bangalore'?'Karnataka · South India':'Chandigarh · Panchkula · Mohali';
+  if(currentStep===2&&selectedSpace&&selectedTheme)renderPlans();
+  if(document.getElementById('step1b').classList.contains('active')&&selectedSpace)renderThemes();
+}
+setCity(city);
+
+/* ── STEP NAV ── */
+function goToStep(n){
+  document.querySelectorAll('.step-panel').forEach(p=>p.classList.remove('active'));
+  const map={1:'step1','1b':'step1b',2:'step2',3:'step3',4:'step4'};
+  document.getElementById(map[n]||('step'+n)).classList.add('active');
+  const pm={1:1,'1b':1,2:2,3:3,4:4};
+  const pn=pm[n]||n;
+  [1,2,3,4].forEach(i=>{
+    const el=document.getElementById('ps'+i);
+    el.classList.remove('active','done');
+    if(i<pn)el.classList.add('done');else if(i===pn)el.classList.add('active');
+  });
+  currentStep=n;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function navToStep(n){
+  if(n>=currentStep&&n!==1)return;
+  if(n===1){goToStep(1);return;}
+  if(n===2&&selectedTheme){goToStep(2);return;}
+  if(n===3&&selectedTier){buildSummary();goToStep(3);return;}
+}
+
+/* ── STEP 1 ── */
+function selectSpace(space,card){
+  selectedSpace=space;selectedTheme=null;selectedTier=null;
+  document.querySelectorAll('.space-card').forEach(c=>c.classList.remove('selected'));
+  card.classList.add('selected');
+  setTimeout(()=>{renderThemes();goToStep('1b');},300);
+}
+
+/* ── STEP 1B ── */
+function renderThemes(){
+  const themes=THEMES[selectedSpace];
+  const meta=SPACE_META[selectedSpace];
+  document.getElementById('s1bEye').textContent='Step 1 — '+meta.label;
+  document.getElementById('s1bTitle').innerHTML='Choose your <em>'+meta.label.toLowerCase()+' theme</em>';
+  document.getElementById('themeGrid').innerHTML=Object.values(themes).map(t=>{
+    const p=city==='bangalore'?t.plans.seed.price_b:t.plans.seed.price_t;
+    return`<div class="theme-card" onclick="selectTheme('${t.id}',this)">
+      <div class="tc-check">✓</div><span class="tc-icon">${t.icon}</span>
+      <div class="tc-name">${t.name}</div>
+      <div class="tc-desc">${t.desc}</div>
+      <div class="tc-price">From ${fmt(p)} · 3 plans</div>
+    </div>`;
+  }).join('');
+}
+function selectTheme(id,card){
+  selectedTheme=id;selectedTier=null;
+  document.querySelectorAll('.theme-card').forEach(c=>c.classList.remove('selected'));
+  card.classList.add('selected');
+  setTimeout(()=>{renderPlans();goToStep(2);},350);
+}
+function goBackToTheme(){renderThemes();goToStep('1b');}
+
+/* ── STEP 2: PLANS ── */
+function renderPlans(){
+  const theme=THEMES[selectedSpace][selectedTheme];
+  const meta=SPACE_META[selectedSpace];
+  document.getElementById('s2Eye').textContent='Step 2 — '+meta.label+' · '+theme.name;
+  document.getElementById('s2Title').innerHTML='Pick your <em>'+theme.name.toLowerCase()+' plan</em>';
+  document.getElementById('qsIcon').textContent=meta.icon;
+  document.getElementById('qsName').textContent=meta.label;
+  document.getElementById('qsTheme').textContent=theme.icon+' '+theme.name;
+
+  /* default to bloom (popular) if nothing selected */
+  if(!selectedTier)selectedTier='bloom';
+
+  const tiers=['seed','bloom','canopy'];
+  document.getElementById('planTabs').innerHTML=tiers.map(t=>{
+    const plan=theme.plans[t];
+    const price=city==='bangalore'?plan.price_b:plan.price_t;
+    const tierLabel=t.charAt(0).toUpperCase()+t.slice(1);
+    return`<div class="plan-tab${selectedTier===t?' active':''}" onclick="choosePlan('${t}')">
+      ${plan.badge?`<div class="pc-badge">${plan.badge}</div>`:''}
+      <div class="pc-tier">${tierLabel} Plan</div>
+      <div class="pc-price">${fmt(price)}</div>
+      <div class="pc-includes">${plan.includes}</div>
+    </div>`;
+  }).join('');
+
+  renderPlantGrid();
+}
+
+function choosePlan(tier){
+  selectedTier=tier;
+  document.querySelectorAll('.plan-tab').forEach(c=>c.classList.remove('active'));
+  document.querySelector(`.plan-tab:nth-child(${tier==='seed'?1:tier==='bloom'?2:3})`).classList.add('active');
+  renderPlantGrid();
+}
+
+/* ── PLANT CATEGORY CLASSIFIER ── */
+const CAT_RULES=[
+  {cat:'tree',label:'Trees',words:['Gulmohar','Ashoka','Neem','Pongamia','Cassia','Amaltas','Moringa','Drumstick']},
+  {cat:'tropical',label:'Tropical',words:['Palm','Monstera','Bird of Paradise','Banana','Heliconia','Plumeria','Frangipani','Traveller','Colocasia','Elephant Ear','Cordyline','Philodendron Selloum','Calathea','Croton']},
+  {cat:'fruit',label:'Fruit Trees',words:['Lemon','Guava','Papaya','Orange','Mango']},
+  {cat:'vegetable',label:'Vegetables',words:['Tomato','Capsicum','Brinjal','Spinach','Bean','Kale','Cucumber','Lettuce','Okra','Bhindi','Bottle Gourd','Microgreen','Spring Onion','Methi','Fenugreek']},
+  {cat:'herb',label:'Herbs',words:['Tulsi','Basil','Mint','Coriander','Curry Leaf','Lemongrass','Rosemary','Thyme','Chilli','Ajwain','Oregano','Sage']},
+  {cat:'flowering',label:'Flowering',words:['Bougainvillea','Hibiscus','Ixora','Adenium','Crossandra','Petunia','Anthurium','Orchid','Rose','Marigold','Balsam','Portulaca','Vinca','Zinnia','Geranium','Mogra','Madhumalti','Rangoon','Dahlia','Gerbera','Foxglove','Hydrangea','Delphinium','Snapdragon','Wisteria','Salvia','Alyssum','Dianthus','Tuberose','Lavender']},
+  {cat:'succulent',label:'Succulents & Cacti',words:['Echeveria','Jade','Aloe','Cactus','Cacti','Haworthia','Crassula','String of','Sedum','Gasteria','Lithops','Euphorbia','Graptoveria','Senecio','Cereus','Agave']},
+  {cat:'climber',label:'Climbers',words:['Jasmine','Chameli','Creeping','Climbing']},
+  {cat:'foliage',label:'Foliage & Air Purifying',words:['Money Plant','Snake Plant','Spider Plant','Pothos','Aglaonema','ZZ Plant','Peace Lily','Rubber Plant','Philodendron','Dracaena','Syngonium','Fern','Dieffenbachia','Song of India','Asparagus','Mondo Grass','Bamboo','Lucky Bamboo','Ornamental Grass','Sago','Cycas','Cast Iron','Japanese Maple','Bonsai']},
+  {cat:'grass',label:'Lawn & Ground Cover',words:['Lawn','grass','Wedelia','Lantana','Wildflower']},
+  {cat:'extras',label:'Extras & Infrastructure',words:['irrigation','Compost','Drip','pathway','lighting','Trellis','arch','Seating','Stone','Deck','Pebble','Mulch']},
+];
+
+function classifyPlant(name){
+  const lower=name.toLowerCase();
+  for(const rule of CAT_RULES){
+    for(const w of rule.words){
+      if(lower.includes(w.toLowerCase()))return{cat:rule.cat,label:rule.label};
+    }
+  }
+  return{cat:'foliage',label:'Foliage & Air Purifying'};
+}
+
+const CAT_ORDER=['tree','tropical','fruit','vegetable','herb','flowering','succulent','climber','foliage','grass','extras'];
+
+function renderPlantGrid(){
+  const theme=THEMES[selectedSpace][selectedTheme];
+  const plan=theme.plans[selectedTier];
+  const price=city==='bangalore'?plan.price_b:plan.price_t;
+  const tierLabel=selectedTier.charAt(0).toUpperCase()+selectedTier.slice(1);
+
+  document.getElementById('plantSectionLabel').textContent='Plants included in '+tierLabel+' Plan ('+plan.plants.length+')';
+
+  /* group plants by category */
+  const groups={};
+  plan.plants.forEach(p=>{
+    const{cat,label}=classifyPlant(p.n);
+    if(!groups[cat])groups[cat]={label,plants:[]};
+    groups[cat].plants.push(p);
+  });
+
+  /* render grouped */
+  let html='';
+  CAT_ORDER.forEach(cat=>{
+    if(!groups[cat])return;
+    const g=groups[cat];
+    html+=`<div class="cat-section"><span class="cat-section-label">${g.label}</span><span class="cat-section-line"></span><span class="cat-section-count">${g.plants.length} plant${g.plants.length>1?'s':''}</span></div>`;
+    g.plants.forEach(p=>{
+      const parts=p.n.split('(');
+      const mainName=parts[0].trim();
+      const variant=parts[1]?parts[1].replace(')','').trim():'';
+      html+=`<div class="plant-card">
+        <div class="plant-img-area">${p.e}<div class="plant-incl-mark">✓</div></div>
+        <div class="plant-body">
+          <div class="plant-nm">${mainName}</div>
+          ${variant?`<div class="plant-bt">${variant}</div>`:''}
+          <div class="plant-tag t-${cat}">${g.label}</div>
+        </div>
+      </div>`;
+    });
+  });
+
+  document.getElementById('plantGrid').innerHTML=html;
+
+  /* update sidebar */
+  document.getElementById('qsPlan').textContent=tierLabel+' Plan';
+  document.getElementById('qsCount').textContent=plan.plants.length+' plants included';
+  document.getElementById('qsPrice').textContent=fmt(price);
+}
+
+function goToStep3(){
+  if(!selectedTier){alert('Please select a plan.');return;}
+  buildSummary();
+  goToStep(3);
+}
+
+/* ── STEP 3: SUMMARY ── */
+function buildSummary(){
+  const theme=THEMES[selectedSpace][selectedTheme];
+  const plan=theme.plans[selectedTier];
+  const price=city==='bangalore'?plan.price_b:plan.price_t;
+  const meta=SPACE_META[selectedSpace];
+  const tierName=selectedTier.charAt(0).toUpperCase()+selectedTier.slice(1);
+  const plantHtml=plan.plants.map(p=>`<div class="qs3-plant-row"><span class="pe">${p.e}</span>${p.n}</div>`).join('');
+
+  document.getElementById('quoteSummary3').innerHTML=`
+    <div class="qs3-title">Your garden plan</div>
+    <div class="qs3-space"><span class="qs3-space-icon">${meta.icon}</span><div class="qs3-space-info"><div class="qs3-name">${meta.label}</div><div class="qs3-plan">${tierName} Plan</div></div></div>
+    <div class="qs3-theme">${theme.icon} ${theme.name}</div>
+    <div class="qs3-plants">${plantHtml}</div>
+    <div class="qs3-totals">
+      <div class="qs3-row total"><span class="l">Plan price</span><span class="a">${fmt(price)}</span></div>
+    </div>
+    <div class="city-badge-row"><span class="city-badge">${city==='bangalore'?'Bengaluru':'Tricity'}</span><span style="font-size:11px;color:var(--muted);font-weight:300;">50% advance to confirm</span></div>`;
+}
+
+/* ── SUBMIT ── */
+const APPS_SCRIPT_URL='https://script.google.com/macros/s/AKfycbwk29FgWc0B2DaNH6xnWTBzF1E8DGciEV2jVmKh6VNX0WB8ur_m0MEAshpHIZhjbfiZLw/exec';
+
+async function submitQuote(){
+  const name=document.getElementById('s3-name').value.trim();
+  const phone=document.getElementById('s3-phone').value.trim();
+  const email=document.getElementById('s3-email').value.trim();
+  const size=document.getElementById('s3-size').value.trim();
+  const area=document.getElementById('s3-area').value.trim();
+  const timing=document.getElementById('s3-timing').value;
+  const notes=document.getElementById('s3-notes').value.trim();
+  if(!name||!phone||!email){alert('Please fill in your name, phone, and email.');return;}
+
+  const theme=THEMES[selectedSpace][selectedTheme];
+  const plan=theme.plans[selectedTier];
+  const price=city==='bangalore'?plan.price_b:plan.price_t;
+  const meta=SPACE_META[selectedSpace];
+  const tierName=selectedTier.charAt(0).toUpperCase()+selectedTier.slice(1);
+  const refId='RS'+Date.now().toString().slice(-6);
+  const waNumber='919520024449';
+
+  const quoteData={
+    refId,name,phone,email,city,cityLabel:city==='bangalore'?'Bengaluru':'Tricity',
+    spaceType:selectedSpace,spaceLabel:meta.label,
+    theme:theme.name,themeId:selectedTheme,
+    tier:selectedTier,tierName,
+    price,plants:plan.plants.map(p=>p.n),
+    includes:plan.includes,
+    size,area,timing:timing||'Flexible',notes,
+    submittedAt:new Date().toISOString()
+  };
+  localStorage.setItem('rs_last_quote',JSON.stringify(quoteData));
+
+  const btn=document.querySelector('.cf-submit');
+  const orig=btn.textContent;btn.textContent='Sending…';btn.disabled=true;
+  if(APPS_SCRIPT_URL&&APPS_SCRIPT_URL!=='YOUR_APPS_SCRIPT_URL_HERE'){
+    try{await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(quoteData)});}catch(e){console.warn(e);}
+  }
+  btn.textContent=orig;btn.disabled=false;
+
+  const plantList=plan.plants.map(p=>`  • ${p.e} ${p.n}`).join('\n');
+  const msg=`🌿 *NEW GARDEN REQUEST — Root & Sky*\n📋 Ref: #${refId}\n\n👤 *Client:* ${name}\n📱 *Phone:* ${phone}\n📧 *Email:* ${email}\n🏙️ *City:* ${quoteData.cityLabel}\n\n*Space:* ${meta.label}\n*Theme:* ${theme.icon} ${theme.name}\n*Plan:* ${tierName} — ${fmt(price)}\n\n*Plants:*\n${plantList}\n\n*Location:* ${area||'—'}\n*Size:* ${size||'—'}\n*Visit:* ${timing||'Flexible'}\n${notes?`*Notes:* ${notes}`:''}`;
+  window.open('https://wa.me/'+waNumber+'?text='+encodeURIComponent(msg),'_blank');
+
+  // Confirmation
+  const plantRows=plan.plants.map(p=>`<div class="cqr-row"><span class="l">${p.e} ${p.n}</span><span class="v">✓</span></div>`).join('');
+  document.getElementById('confQuoteRef').innerHTML=`
+    <div class="cqr-title">Ref #${refId}</div>
+    <div class="cqr-row"><span class="l">Name</span><span class="v">${name}</span></div>
+    <div class="cqr-row"><span class="l">Space</span><span class="v">${meta.icon} ${meta.label}</span></div>
+    <div class="cqr-row"><span class="l">Theme</span><span class="v">${theme.icon} ${theme.name}</span></div>
+    <div class="cqr-row"><span class="l">Plan</span><span class="v">${tierName}</span></div>
+    <div class="cqr-row total"><span class="l">Price</span><span class="v">${fmt(price)}</span></div>`;
+  document.getElementById('confWaBtn').href='https://wa.me/'+waNumber+'?text='+encodeURIComponent(`Hi Root & Sky! I just submitted my garden request (Ref #${refId}). My name is ${name}.`);
+  goToStep(4);
+}
+
+function startOver(){selectedSpace=null;selectedTheme=null;selectedTier=null;goToStep(1);}
+setCity(city);
+</script>
+</body>
+</html>
