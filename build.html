@@ -270,15 +270,6 @@ body{font-family:'Jost',sans-serif;background:var(--parchment);color:var(--fores
   </div>
 </div>
 
-<div class="city-bar">
-  <span class="city-bar-label">Your city</span>
-  <div class="city-toggle">
-    <button id="ctBangalore" onclick="setCity('bangalore')">Bengaluru</button>
-    <button id="ctTriCity" onclick="setCity('tricity')">Tricity</button>
-  </div>
-  <span style="font-size:11px;font-weight:300;color:var(--muted);margin-left:14px;" id="citySubLabel"></span>
-</div>
-
 <div class="builder-main">
 
   <!-- STEP 1: SPACE TYPE -->
@@ -427,17 +418,17 @@ const THEMES={
     airpurify:{id:'airpurify',icon:'🌿',name:'Air Purifying & Foliage',
       desc:'Low-maintenance greenery that cleans your air. NASA-approved plants for any light condition.',
       plans:{
-        seed:{price_b:9999,price_t:9999,includes:'8 plants · Basic ceramic pots · Potting mix · Installation',
+        seed:{price_b:9999,includes:'8 plants · Basic ceramic pots · Potting mix · Installation',
           plants:[
             {e:'🪴',n:'Money Plant (Golden Pothos)'},{e:'🌱',n:'Snake Plant'},{e:'🌿',n:'Spider Plant'},{e:'🍃',n:'Pothos (Marble Queen)'},
             {e:'🌿',n:'Aglaonema (Green)'},{e:'🪴',n:'Jade Plant'},{e:'🌵',n:'Aloe Vera'},{e:'🌿',n:'Syngonium'}]},
-        bloom:{price_b:19999,price_t:16999,includes:'15 plants · Premium pots · Drip kit · Designer fee',badge:'Popular',
+        bloom:{price_b:19999,includes:'15 plants · Premium pots · Drip kit · Designer fee',badge:'Popular',
           plants:[
             {e:'🪴',n:'Money Plant (Golden Pothos)'},{e:'🌱',n:'Snake Plant (Laurentii)'},{e:'🌿',n:'Spider Plant'},{e:'🍃',n:'Pothos (Marble Queen)'},
             {e:'🌿',n:'Aglaonema (Red Valentine)'},{e:'🪴',n:'ZZ Plant'},{e:'🌿',n:'Peace Lily'},{e:'🌿',n:'Rubber Plant'},
             {e:'🍃',n:'Philodendron Heartleaf'},{e:'🌿',n:'Dracaena Marginata'},{e:'🪴',n:'Jade Plant'},{e:'🌵',n:'Aloe Vera'},
             {e:'🌿',n:'Syngonium Pink'},{e:'🌿',n:'Fern (Boston)'},{e:'🌿',n:'Areca Palm (small)'}]},
-        canopy:{price_b:34999,price_t:28999,includes:'25+ plants · Custom planters · Auto-irrigation · Priority designer',
+        canopy:{price_b:34999,includes:'25+ plants · Custom planters · Auto-irrigation · Priority designer',
           plants:[
             {e:'🪴',n:'Money Plant (3 varieties)'},{e:'🌱',n:'Snake Plant (3 varieties)'},{e:'🌿',n:'Spider Plant (2)'},{e:'🍃',n:'Pothos (Golden + Marble + Neon)'},
             {e:'🌿',n:'Aglaonema (Red + Pink + Green)'},{e:'🪴',n:'ZZ Plant'},{e:'🌿',n:'Peace Lily (2)'},{e:'🌿',n:'Rubber Plant (Burgundy)'},
@@ -448,17 +439,17 @@ const THEMES={
     flowering:{id:'flowering',icon:'🌺',name:'Flowering & Color',
       desc:'Vibrant blooms that transform your balcony. Best with 4+ hours of direct sunlight.',
       plans:{
-        seed:{price_b:11999,price_t:9999,includes:'8 plants · Terracotta pots · Soil & setup · Trellis (1)',
+        seed:{price_b:11999,includes:'8 plants · Terracotta pots · Soil & setup · Trellis (1)',
           plants:[
             {e:'🌸',n:'Dwarf Bougainvillea'},{e:'🌺',n:'Hibiscus (Red)'},{e:'🌸',n:'Ixora (Dwarf)'},{e:'🧡',n:'Crossandra'},
             {e:'🌺',n:'Adenium (Desert Rose)'},{e:'🌸',n:'Petunia (Mixed)'},{e:'🌺',n:'Balsam'},{e:'🌿',n:'Portulaca (Moss Rose)'}]},
-        bloom:{price_b:22999,price_t:18999,includes:'15 plants · Premium pots · Drip kit · Trellis · Designer fee',badge:'Popular',
+        bloom:{price_b:22999,includes:'15 plants · Premium pots · Drip kit · Trellis · Designer fee',badge:'Popular',
           plants:[
             {e:'🌸',n:'Dwarf Bougainvillea (2 colors)'},{e:'🌺',n:'Hibiscus (Red + Yellow)'},{e:'🌸',n:'Ixora (Dwarf, 2)'},{e:'🧡',n:'Crossandra'},
             {e:'🌺',n:'Adenium (Grafted)'},{e:'🌸',n:'Petunia (Mixed, 3)'},{e:'❤️',n:'Anthurium'},{e:'🌺',n:'Balsam'},
             {e:'🌿',n:'Portulaca (Mixed)'},{e:'🌹',n:'Miniature Rose'},{e:'🌼',n:'Marigold (2)'},{e:'🌸',n:'Geranium'},
             {e:'🌺',n:'Vinca (Periwinkle)'},{e:'🌸',n:'Zinnia'},{e:'🌿',n:'Money Plant (filler)'}]},
-        canopy:{price_b:38999,price_t:32999,includes:'25+ plants · Designer pots · Auto-irrigation · Wall trellis · Premium design',
+        canopy:{price_b:38999,includes:'25+ plants · Designer pots · Auto-irrigation · Wall trellis · Premium design',
           plants:[
             {e:'🌸',n:'Dwarf Bougainvillea (3 colors)'},{e:'🌺',n:'Hibiscus (3 varieties)'},{e:'🌸',n:'Ixora (3)'},{e:'🧡',n:'Crossandra (2)'},
             {e:'🌺',n:'Adenium (2 grafted)'},{e:'🌸',n:'Petunia (cascading, 4)'},{e:'❤️',n:'Anthurium (2)'},{e:'🪻',n:'Orchid (Phalaenopsis)'},
@@ -469,19 +460,19 @@ const THEMES={
     herbs:{id:'herbs',icon:'🌱',name:'Herbs & Kitchen Garden',
       desc:'Grow your own fresh herbs and greens. Functional, aromatic, and deeply satisfying.',
       plans:{
-        seed:{price_b:9999,price_t:9999,includes:'10 plants · Grow bags · Organic soil · Labels · Setup',
+        seed:{price_b:9999,includes:'10 plants · Grow bags · Organic soil · Labels · Setup',
           plants:[
             {e:'🌿',n:'Tulsi (Holy Basil)'},{e:'🌿',n:'Mint'},{e:'🌿',n:'Coriander'},{e:'🌿',n:'Curry Leaf'},
             {e:'🌶️',n:'Green Chilli'},{e:'🍅',n:'Cherry Tomato'},{e:'🌿',n:'Methi (Fenugreek)'},{e:'🌿',n:'Spinach (Palak)'},
             {e:'🌿',n:'Spring Onion'},{e:'🌿',n:'Lemongrass'}]},
-        bloom:{price_b:17999,price_t:14999,includes:'18 plants · Premium grow bags · Drip kit · Organic compost · Designer',badge:'Popular',
+        bloom:{price_b:17999,includes:'18 plants · Premium grow bags · Drip kit · Organic compost · Designer',badge:'Popular',
           plants:[
             {e:'🌿',n:'Tulsi (Holy Basil)'},{e:'🌿',n:'Sweet Basil'},{e:'🌿',n:'Mint (2 varieties)'},{e:'🌿',n:'Coriander'},
             {e:'🌿',n:'Curry Leaf'},{e:'🌶️',n:'Green Chilli'},{e:'🌶️',n:'Red Chilli'},{e:'🍅',n:'Cherry Tomato (2)'},
             {e:'🌿',n:'Methi'},{e:'🌿',n:'Spinach'},{e:'🌿',n:'Spring Onion'},{e:'🌿',n:'Lemongrass'},
             {e:'🌿',n:'Rosemary'},{e:'🌿',n:'Thyme'},{e:'🥒',n:'Capsicum'},{e:'🌿',n:'Ajwain'},
             {e:'🌿',n:'Lettuce'},{e:'🌿',n:'Microgreens tray'}]},
-        canopy:{price_b:29999,price_t:24999,includes:'28+ plants · Raised grow system · Auto-drip · Compost · Trellis · Premium design',
+        canopy:{price_b:29999,includes:'28+ plants · Raised grow system · Auto-drip · Compost · Trellis · Premium design',
           plants:[
             {e:'🌿',n:'Tulsi (3 varieties)'},{e:'🌿',n:'Sweet Basil + Thai Basil'},{e:'🌿',n:'Mint (3 varieties)'},{e:'🌿',n:'Coriander (2)'},
             {e:'🌿',n:'Curry Leaf (large)'},{e:'🌶️',n:'Chilli (3 varieties)'},{e:'🍅',n:'Cherry Tomato (3)'},{e:'🌿',n:'Methi'},
@@ -493,18 +484,18 @@ const THEMES={
     succulents:{id:'succulents',icon:'🪴',name:'Succulents & Cacti',
       desc:'Minimal watering, maximum style. Perfect for sunny spots and frequent travellers.',
       plans:{
-        seed:{price_b:9999,price_t:9999,includes:'10 plants · Ceramic bowls · Succulent soil · Pebble top · Setup',
+        seed:{price_b:9999,includes:'10 plants · Ceramic bowls · Succulent soil · Pebble top · Setup',
           plants:[
             {e:'🌸',n:'Echeveria (Green)'},{e:'🪴',n:'Jade Plant'},{e:'🌵',n:'Aloe Vera'},{e:'🌵',n:'Cactus (Globe)'},
             {e:'🪴',n:'Haworthia'},{e:'🌿',n:'Crassula (Mini)'},{e:'🌵',n:'Cactus (Column)'},{e:'🌸',n:'Sedum'},
             {e:'🪴',n:'Gasteria'},{e:'🌵',n:'Euphorbia'}]},
-        bloom:{price_b:18999,price_t:15999,includes:'18 plants · Designer ceramics · Dish gardens · Hanging planter · Setup',badge:'Popular',
+        bloom:{price_b:18999,includes:'18 plants · Designer ceramics · Dish gardens · Hanging planter · Setup',badge:'Popular',
           plants:[
             {e:'🌸',n:'Echeveria (3 colors)'},{e:'🪴',n:'Jade Plant (large)'},{e:'🌵',n:'Aloe Vera'},{e:'🌵',n:'Cactus assortment (4)'},
             {e:'🪴',n:'Haworthia (2)'},{e:'🌿',n:'Crassula (3 varieties)'},{e:'📿',n:'String of Pearls'},{e:'🌸',n:'Sedum (2)'},
             {e:'🪴',n:'Gasteria'},{e:'🌵',n:'Euphorbia'},{e:'🌸',n:'Echeveria Lola'},{e:'🪴',n:'Lithops (Living Stones)'},
             {e:'🌿',n:'Senecio (Blue Chalk)'},{e:'🌸',n:'Graptoveria'}]},
-        canopy:{price_b:31999,price_t:26999,includes:'28+ plants · Premium ceramics · Vertical succulent frame · Pebble garden · Designer',
+        canopy:{price_b:31999,includes:'28+ plants · Premium ceramics · Vertical succulent frame · Pebble garden · Designer',
           plants:[
             {e:'🌸',n:'Echeveria (6 varieties)'},{e:'🪴',n:'Jade Plant (tree form)'},{e:'🌵',n:'Aloe (2 varieties)'},{e:'🌵',n:'Cactus collection (8)'},
             {e:'🪴',n:'Haworthia (3)'},{e:'🌿',n:'Crassula (4 varieties)'},{e:'📿',n:'String of Pearls (2)'},{e:'📿',n:'String of Bananas'},
@@ -514,21 +505,21 @@ const THEMES={
   },
   terrace:{
     tropical:{id:'tropical',icon:'🌴',name:'Tropical Paradise',
-      desc:'Dramatic palms, lush foliage, resort vibes. Best in Bengaluru year-round; seasonal in Tricity.',
+      desc:'Dramatic palms, lush foliage, resort vibes. Thrives in Bengaluru year-round.',
       plans:{
-        seed:{price_b:19999,price_t:16999,includes:'12 plants · Large FRP planters · Potting mix · Installation',
+        seed:{price_b:19999,includes:'12 plants · Large FRP planters · Potting mix · Installation',
           plants:[
             {e:'🌴',n:'Areca Palm (4 ft)'},{e:'🌿',n:'Monstera Deliciosa'},{e:'🍌',n:'Banana Plant (Dwarf)'},{e:'🍃',n:'Colocasia (Elephant Ear)'},
             {e:'🌿',n:'Philodendron Selloum'},{e:'🌺',n:'Heliconia (small)'},{e:'🌼',n:'Plumeria / Frangipani'},{e:'🌿',n:'Cordyline (Red)'},
             {e:'🪴',n:'Money Plant (large, trailing)'},{e:'🌿',n:'Dracaena (Tall)'},{e:'🌿',n:'Croton (colorful)'},{e:'🌿',n:'Song of India'}]},
-        bloom:{price_b:39999,price_t:32999,includes:'22 plants · Premium planters · Drip system · Pergola plants · Designer',badge:'Popular',
+        bloom:{price_b:39999,includes:'22 plants · Premium planters · Drip system · Pergola plants · Designer',badge:'Popular',
           plants:[
             {e:'🌴',n:'Areca Palm (5 ft, 2)'},{e:'🌿',n:'Monstera Deliciosa (2)'},{e:'🦜',n:'Bird of Paradise'},{e:'🍌',n:'Banana Plant (2)'},
             {e:'🍃',n:'Colocasia (2 varieties)'},{e:'🌿',n:'Philodendron Selloum'},{e:'🌺',n:'Heliconia (2)'},{e:'🌼',n:'Plumeria (2)'},
             {e:'🌿',n:'Cordyline (Red + Pink)'},{e:'🪴',n:'Money Plant (large)'},{e:'🌿',n:'Dracaena (2 varieties)'},{e:'🌿',n:'Croton (3)'},
             {e:'🌿',n:'Song of India'},{e:'🌿',n:'Rubber Plant (Burgundy)'},{e:'🌿',n:'Fern (Boston, 2)'},{e:'🌿',n:'Calathea'},
             {e:'🌿',n:'Aglaonema (Red)'},{e:'🌺',n:'Anthurium'}]},
-        canopy:{price_b:64999,price_t:54999,includes:'35+ plants · Custom planters · Auto-irrigation · Seating area · Architect design',
+        canopy:{price_b:64999,includes:'35+ plants · Custom planters · Auto-irrigation · Seating area · Architect design',
           plants:[
             {e:'🌴',n:'Areca Palm (6 ft, 3)'},{e:'🌿',n:'Monstera (3)'},{e:'🦜',n:'Bird of Paradise (2)'},{e:'🍌',n:'Banana (3 varieties)'},
             {e:'🍃',n:'Colocasia (3)'},{e:'🌿',n:'Philodendron (3 varieties)'},{e:'🌺',n:'Heliconia (3)'},{e:'🌼',n:'Plumeria (3)'},
@@ -539,13 +530,13 @@ const THEMES={
     kitchen:{id:'kitchen',icon:'🥬',name:'Kitchen & Edible Garden',
       desc:'Grow vegetables, fruits, and herbs on your terrace. Raised beds, drip irrigation, fresh produce.',
       plans:{
-        seed:{price_b:17999,price_t:14999,includes:'15 plants · Grow bags · Raised bed (1) · Organic soil · Drip kit',
+        seed:{price_b:17999,includes:'15 plants · Grow bags · Raised bed (1) · Organic soil · Drip kit',
           plants:[
             {e:'🍅',n:'Tomato (Hybrid, 2)'},{e:'🌶️',n:'Chilli (Green + Red)'},{e:'🥒',n:'Capsicum'},{e:'🌿',n:'Spinach (2)'},
             {e:'🫘',n:'Beans (Climbing)'},{e:'🌿',n:'Coriander'},{e:'🌿',n:'Mint'},{e:'🌿',n:'Tulsi'},
             {e:'🌿',n:'Curry Leaf'},{e:'🌿',n:'Methi'},{e:'🌿',n:'Lemongrass'},{e:'🌿',n:'Spring Onion'},
             {e:'🍋',n:'Dwarf Lemon (grafted)'},{e:'🌿',n:'Ajwain'},{e:'🌿',n:'Lettuce'}]},
-        bloom:{price_b:34999,price_t:28999,includes:'28 plants · Grow bags · Raised beds (3) · Drip system · Fruit saplings · Designer',badge:'Popular',
+        bloom:{price_b:34999,includes:'28 plants · Grow bags · Raised beds (3) · Drip system · Fruit saplings · Designer',badge:'Popular',
           plants:[
             {e:'🍅',n:'Tomato (3 varieties)'},{e:'🌶️',n:'Chilli (3 varieties)'},{e:'🥒',n:'Capsicum (2 colors)'},{e:'🌿',n:'Spinach (2)'},
             {e:'🫘',n:'Beans (2 types)'},{e:'🍆',n:'Brinjal (2)'},{e:'🥬',n:'Kale'},{e:'🥒',n:'Cucumber'},
@@ -553,7 +544,7 @@ const THEMES={
             {e:'🌿',n:'Methi'},{e:'🌿',n:'Lemongrass (2)'},{e:'🌿',n:'Rosemary'},{e:'🌿',n:'Thyme'},
             {e:'🍋',n:'Dwarf Lemon (grafted)'},{e:'🍈',n:'Dwarf Guava (grafted)'},{e:'🌿',n:'Spring Onion (2)'},{e:'🌿',n:'Lettuce (2)'},
             {e:'🌿',n:'Microgreens trays (3)'}]},
-        canopy:{price_b:56999,price_t:46999,includes:'40+ plants · Full raised bed system · Auto-drip · Fruit trees · Compost bin · Designer',
+        canopy:{price_b:56999,includes:'40+ plants · Full raised bed system · Auto-drip · Fruit trees · Compost bin · Designer',
           plants:[
             {e:'🍅',n:'Tomato (5 varieties)'},{e:'🌶️',n:'Chilli (4 varieties)'},{e:'🥒',n:'Capsicum (3)'},{e:'🌿',n:'Spinach (3)'},
             {e:'🫘',n:'Beans (3 types)'},{e:'🍆',n:'Brinjal (3)'},{e:'🥬',n:'Kale (2)'},{e:'🥒',n:'Cucumber (2)'},
@@ -564,18 +555,18 @@ const THEMES={
     floral:{id:'floral',icon:'🌸',name:'Flowering Retreat',
       desc:'Fragrant, colorful rooftop escape — roses, jasmine, bougainvillea, and trailing blooms.',
       plans:{
-        seed:{price_b:17999,price_t:14999,includes:'12 plants · Terracotta pots · Trellis (2) · Soil · Setup',
+        seed:{price_b:17999,includes:'12 plants · Terracotta pots · Trellis (2) · Soil · Setup',
           plants:[
             {e:'🌺',n:'Bougainvillea (Pink)'},{e:'🌸',n:'Jasmine (Chameli)'},{e:'🌺',n:'Hibiscus (Red)'},{e:'🌹',n:'Rose (Hybrid Tea)'},
             {e:'🌸',n:'Ixora'},{e:'🌺',n:'Adenium'},{e:'🌸',n:'Mogra'},{e:'🌿',n:'Portulaca (Mixed)'},
             {e:'🌺',n:'Madhumalti / Rangoon Creeper'},{e:'🌸',n:'Crossandra'},{e:'🌼',n:'Marigold (2)'},{e:'🌿',n:'Money Plant (filler)'}]},
-        bloom:{price_b:36999,price_t:29999,includes:'22 plants · Premium pots · Drip · Wall trellis · Pergola plants · Designer',badge:'Popular',
+        bloom:{price_b:36999,includes:'22 plants · Premium pots · Drip · Wall trellis · Pergola plants · Designer',badge:'Popular',
           plants:[
             {e:'🌺',n:'Bougainvillea (3 colors)'},{e:'🌸',n:'Jasmine (2)'},{e:'🌺',n:'Hibiscus (3 varieties)'},{e:'🌹',n:'Rose (4 varieties)'},
             {e:'🌸',n:'Ixora (3)'},{e:'🌺',n:'Adenium (2 grafted)'},{e:'🌸',n:'Mogra (2)'},{e:'🌿',n:'Portulaca (Mixed, 3)'},
             {e:'🌺',n:'Madhumalti'},{e:'🌸',n:'Crossandra (2)'},{e:'🌼',n:'Marigold (3)'},{e:'🌸',n:'Petunia (cascading, 3)'},
             {e:'🌼',n:'Plumeria'},{e:'🌸',n:'Zinnia (2)'}]},
-        canopy:{price_b:59999,price_t:49999,includes:'35+ plants · Designer pots · Auto-irrigation · Pergola · Fragrance garden · Architect',
+        canopy:{price_b:59999,includes:'35+ plants · Designer pots · Auto-irrigation · Pergola · Fragrance garden · Architect',
           plants:[
             {e:'🌺',n:'Bougainvillea (5 colors)'},{e:'🌸',n:'Jasmine (3 varieties)'},{e:'🌺',n:'Hibiscus (5 varieties)'},{e:'🌹',n:'Rose (8 varieties)'},
             {e:'🌸',n:'Ixora (4)'},{e:'🌺',n:'Adenium (3)'},{e:'🌸',n:'Mogra (3)'},{e:'🌿',n:'Portulaca (5)'},
@@ -585,18 +576,18 @@ const THEMES={
     zen:{id:'zen',icon:'🎋',name:'Zen & Minimal',
       desc:'Clean lines, bamboo, ornamental grasses, pebble gardens. Meditative and low-maintenance.',
       plans:{
-        seed:{price_b:22999,price_t:18999,includes:'10 plants · Matte ceramic pots · Pebble layer · Setup',
+        seed:{price_b:22999,includes:'10 plants · Matte ceramic pots · Pebble layer · Setup',
           plants:[
             {e:'🎋',n:'Clumping Bamboo'},{e:'🌱',n:'Snake Plant (Tall, 2)'},{e:'🌿',n:'Ornamental Grass (Pennisetum)'},
             {e:'🌿',n:'Fern (Sword)'},{e:'🌿',n:'Peace Lily'},{e:'🪴',n:'Lucky Bamboo (arrangement)'},
             {e:'🌿',n:'Mondo Grass'},{e:'🌿',n:'ZZ Plant'},{e:'🌸',n:'Echeveria (dish garden)'},{e:'🌿',n:'Asparagus Fern'}]},
-        bloom:{price_b:44999,price_t:36999,includes:'16 plants · Designer ceramics · Pebble garden · Water feature · Deck tiles · Designer',badge:'Popular',
+        bloom:{price_b:44999,includes:'16 plants · Designer ceramics · Pebble garden · Water feature · Deck tiles · Designer',badge:'Popular',
           plants:[
             {e:'🎋',n:'Clumping Bamboo (2)'},{e:'🌱',n:'Snake Plant (3 varieties)'},{e:'🌿',n:'Ornamental Grass (3)'},
             {e:'🌿',n:'Fern (3 varieties)'},{e:'🌿',n:'Peace Lily (2)'},{e:'🪴',n:'Lucky Bamboo (large)'},
             {e:'🌿',n:'Mondo Grass (3)'},{e:'🌿',n:'ZZ Plant (2)'},{e:'🌸',n:'Echeveria arrangement'},
             {e:'🌿',n:'Japanese Sago Palm (Cycas)'},{e:'🌿',n:'Asparagus Fern (2)'},{e:'🪴',n:'Bonsai (Ficus)'}]},
-        canopy:{price_b:74999,price_t:59999,includes:'24+ plants · Concrete planters · Full pebble garden · Water feature · Bamboo screen · Architect',
+        canopy:{price_b:74999,includes:'24+ plants · Concrete planters · Full pebble garden · Water feature · Bamboo screen · Architect',
           plants:[
             {e:'🎋',n:'Clumping Bamboo (4)'},{e:'🌱',n:'Snake Plant (5 varieties)'},{e:'🌿',n:'Ornamental Grass (6)'},
             {e:'🌿',n:'Fern collection (5)'},{e:'🌿',n:'Peace Lily (3)'},{e:'🪴',n:'Lucky Bamboo (xl)'},
@@ -609,18 +600,18 @@ const THEMES={
     lush:{id:'lush',icon:'🌳',name:'Lush Landscape',
       desc:'Full garden — shade trees, hedges, flowering shrubs, lawn, ground cover, pathways.',
       plans:{
-        seed:{price_b:29999,price_t:24999,includes:'18 plants + lawn (up to 200 sq ft) · Basic landscape · Designer visit',
+        seed:{price_b:29999,includes:'18 plants + lawn (up to 200 sq ft) · Basic landscape · Designer visit',
           plants:[
             {e:'🌳',n:'Ashoka Tree (2)'},{e:'🌺',n:'Bougainvillea (hedge, 3)'},{e:'🌿',n:'Duranta (hedge, 4)'},
             {e:'🌸',n:'Ixora (3)'},{e:'🌿',n:'Lantana (ground cover, 3)'},{e:'🌼',n:'Marigold (seasonal, 3)'},
             {e:'🌿',n:'Lawn grass (Bermuda, up to 200 sq ft)'}]},
-        bloom:{price_b:54999,price_t:44999,includes:'35 plants + lawn (up to 500 sq ft) · Full yard · Irrigation · Designer',badge:'Popular',
+        bloom:{price_b:54999,includes:'35 plants + lawn (up to 500 sq ft) · Full yard · Irrigation · Designer',badge:'Popular',
           plants:[
             {e:'🌳',n:'Ashoka Tree (3)'},{e:'🌳',n:'Neem'},{e:'🌺',n:'Bougainvillea (5)'},{e:'🌿',n:'Ficus hedge (6)'},
             {e:'🌿',n:'Duranta (6)'},{e:'🌸',n:'Ixora (5)'},{e:'🌺',n:'Hibiscus (3)'},{e:'🌿',n:'Lantana (5)'},
             {e:'🌼',n:'Marigold (seasonal, 6)'},{e:'🌸',n:'Jasmine (2)'},{e:'🌿',n:'Wedelia ground cover'},
             {e:'🌿',n:'Lawn grass (Bermuda/Korean, up to 500 sq ft)'},{e:'🌿',n:'Drip irrigation system'}]},
-        canopy:{price_b:99999,price_t:84999,includes:'60+ plants + lawn (up to 1500 sq ft) · Complete landscape · Auto-irrigation · Pathways · Architect',
+        canopy:{price_b:99999,includes:'60+ plants + lawn (up to 1500 sq ft) · Complete landscape · Auto-irrigation · Pathways · Architect',
           plants:[
             {e:'🌳',n:'Gulmohar (specimen)'},{e:'🌳',n:'Ashoka (4)'},{e:'🌳',n:'Neem (2)'},{e:'🌺',n:'Bougainvillea (8)'},
             {e:'🌿',n:'Ficus hedge (12)'},{e:'🌿',n:'Duranta (10)'},{e:'🌸',n:'Ixora (8)'},{e:'🌺',n:'Hibiscus (5)'},
@@ -631,18 +622,18 @@ const THEMES={
     tropical:{id:'tropical',icon:'🌴',name:'Tropical Estate',
       desc:'Hotel-luxury — tall palms, dramatic specimens, lush tropical foliage throughout.',
       plans:{
-        seed:{price_b:34999,price_t:29999,includes:'12 specimen plants · Large FRP urns · Landscape · Designer',
+        seed:{price_b:34999,includes:'12 specimen plants · Large FRP urns · Landscape · Designer',
           plants:[
             {e:'🌴',n:'Areca Palm (6 ft, 2)'},{e:'🦜',n:'Bird of Paradise'},{e:'🌼',n:'Frangipani / Plumeria'},
             {e:'🍌',n:'Banana (Dwarf, 2)'},{e:'🌿',n:'Monstera (large)'},{e:'🌺',n:'Heliconia'},{e:'🍃',n:'Colocasia (2)'},
             {e:'🌿',n:'Croton (3)'},{e:'🌿',n:'Cordyline (2)'}]},
-        bloom:{price_b:64999,price_t:54999,includes:'28 plants · Premium planters · Irrigation · Landscape · Designer',badge:'Popular',
+        bloom:{price_b:64999,includes:'28 plants · Premium planters · Irrigation · Landscape · Designer',badge:'Popular',
           plants:[
             {e:'🌴',n:'Areca Palm (7 ft, 3)'},{e:'🌴',n:'Foxtail Palm'},{e:'🦜',n:'Bird of Paradise (2)'},{e:'🌼',n:'Plumeria (3)'},
             {e:'🍌',n:'Banana (3)'},{e:'🌿',n:'Monstera (3)'},{e:'🌺',n:'Heliconia (3)'},{e:'🍃',n:'Colocasia (3)'},
             {e:'🌿',n:'Traveller\'s Palm'},{e:'🌿',n:'Philodendron (3)'},{e:'🌿',n:'Croton (5)'},{e:'🌿',n:'Cordyline (3)'},
             {e:'🌿',n:'Fern collection (4)'},{e:'🌿',n:'Drip irrigation system'}]},
-        canopy:{price_b:119999,price_t:99999,includes:'50+ plants · Custom urns · Auto-irrigation · Full tropical landscape · Architect',
+        canopy:{price_b:119999,includes:'50+ plants · Custom urns · Auto-irrigation · Full tropical landscape · Architect',
           plants:[
             {e:'🌴',n:'Royal Palm (2)'},{e:'🌴',n:'Foxtail Palm (2)'},{e:'🌴',n:'Areca Palm (6)'},{e:'🦜',n:'Bird of Paradise (4)'},
             {e:'🌼',n:'Plumeria (5)'},{e:'🍌',n:'Banana cluster (5)'},{e:'🌿',n:'Monstera (5)'},{e:'🌺',n:'Heliconia (5)'},
@@ -653,19 +644,19 @@ const THEMES={
     native:{id:'native',icon:'🌾',name:'Native & Low-Water',
       desc:'Eco-friendly, drought-resistant with native Indian species. Minimal water, maximum beauty.',
       plans:{
-        seed:{price_b:24999,price_t:19999,includes:'15 plants · Terracotta · Mulch · Basic landscape · Setup',
+        seed:{price_b:24999,includes:'15 plants · Terracotta · Mulch · Basic landscape · Setup',
           plants:[
             {e:'🌳',n:'Neem (sapling)'},{e:'🌿',n:'Moringa / Drumstick'},{e:'🌿',n:'Curry Leaf tree'},
             {e:'🌸',n:'Plumbago (Blue)'},{e:'🌵',n:'Agave americana'},{e:'🌿',n:'Portulaca (Mixed, 3)'},
             {e:'🌿',n:'Ornamental Grass (Pennisetum, 2)'},{e:'🌿',n:'Lantana (3)'},{e:'🌿',n:'Wedelia ground cover (2)'},
             {e:'🌿',n:'Bougainvillea'}]},
-        bloom:{price_b:44999,price_t:36999,includes:'30 plants · Mulch garden · Pebble paths · Irrigation · Designer',badge:'Popular',
+        bloom:{price_b:44999,includes:'30 plants · Mulch garden · Pebble paths · Irrigation · Designer',badge:'Popular',
           plants:[
             {e:'🌳',n:'Neem (2)'},{e:'🌿',n:'Moringa (2)'},{e:'🌿',n:'Curry Leaf (large)'},{e:'🌳',n:'Cassia / Amaltas'},
             {e:'🌸',n:'Plumbago (4)'},{e:'🌵',n:'Agave (3)'},{e:'🌿',n:'Portulaca (6)'},{e:'🌿',n:'Ornamental Grass (5)'},
             {e:'🌿',n:'Lantana (5)'},{e:'🌿',n:'Wedelia (large patch)'},{e:'🌺',n:'Bougainvillea (3)'},
             {e:'🌸',n:'Native wildflower mix'},{e:'🌿',n:'Drip irrigation system'}]},
-        canopy:{price_b:79999,price_t:64999,includes:'55+ plants · Full native landscape · Auto-drip · Mulch · Pathways · Architect',
+        canopy:{price_b:79999,includes:'55+ plants · Full native landscape · Auto-drip · Mulch · Pathways · Architect',
           plants:[
             {e:'🌳',n:'Neem (3)'},{e:'🌿',n:'Moringa (3)'},{e:'🌿',n:'Curry Leaf (2)'},{e:'🌳',n:'Cassia (2)'},
             {e:'🌳',n:'Pongamia / Karanj'},{e:'🌸',n:'Plumbago (8)'},{e:'🌵',n:'Agave (5)'},{e:'🌿',n:'Portulaca (10)'},
@@ -674,20 +665,20 @@ const THEMES={
             {e:'🌿',n:'Auto-irrigation · Mulch pathways · Stone borders'}]},
       }},
     cottage:{id:'cottage',icon:'🌹',name:'English Cottage',
-      desc:'Roses, lavender, dahlias, climbing vines. Romantic and classic — best in Tricity\'s cooler climate.',
+      desc:'Roses, lavender, dahlias, climbing vines. Romantic and classic — suited to Bengaluru\'s mild climate.',
       plans:{
-        seed:{price_b:29999,price_t:24999,includes:'15 plants · Terracotta · Garden arch (1) · Soil · Setup',
+        seed:{price_b:29999,includes:'15 plants · Terracotta · Garden arch (1) · Soil · Setup',
           plants:[
             {e:'🌹',n:'Rose (Hybrid Tea, 3 varieties)'},{e:'🌹',n:'Climbing Rose'},{e:'🌸',n:'Dahlia (2)'},
             {e:'🌼',n:'Gerbera (2)'},{e:'🌸',n:'Petunia (3)'},{e:'🌿',n:'Salvia (2)'},{e:'🌿',n:'Alyssum (border)'},
             {e:'🌸',n:'Dianthus'}]},
-        bloom:{price_b:54999,price_t:44999,includes:'30 plants · Premium pots · Garden arches (2) · Trellis · Irrigation · Designer',badge:'Popular',
+        bloom:{price_b:54999,includes:'30 plants · Premium pots · Garden arches (2) · Trellis · Irrigation · Designer',badge:'Popular',
           plants:[
             {e:'🌹',n:'Rose (6 varieties)'},{e:'🌹',n:'Climbing Rose (2)'},{e:'🌸',n:'Dahlia (4)'},{e:'🌼',n:'Gerbera (3)'},
             {e:'🌸',n:'Petunia (5)'},{e:'🌿',n:'Salvia (4)'},{e:'🌿',n:'Alyssum (border, 4)'},{e:'🌸',n:'Dianthus (3)'},
-            {e:'💜',n:'Hydrangea'},{e:'🌸',n:'Foxglove'},{e:'🌿',n:'Lavender (2 — Tricity suited)'},
+            {e:'💜',n:'Hydrangea'},{e:'🌸',n:'Foxglove'},{e:'🌿',n:'Lavender (2)'},
             {e:'🌸',n:'Delphinium'},{e:'🌸',n:'Snapdragon (3)'},{e:'🌿',n:'Drip irrigation'}]},
-        canopy:{price_b:94999,price_t:79999,includes:'55+ plants · Full cottage garden · Arches · Pathways · Seating · Architect',
+        canopy:{price_b:94999,includes:'55+ plants · Full cottage garden · Arches · Pathways · Seating · Architect',
           plants:[
             {e:'🌹',n:'Rose (12 varieties inc. David Austin)'},{e:'🌹',n:'Climbing Rose (4)'},{e:'🌸',n:'Dahlia (8)'},
             {e:'🌼',n:'Gerbera (5)'},{e:'🌸',n:'Petunia (8)'},{e:'🌿',n:'Salvia (6)'},{e:'🌿',n:'Alyssum (borders)'},
@@ -705,19 +696,9 @@ const SPACE_META={
 };
 
 /* ── STATE ── */
-let city=new URLSearchParams(location.search).get('city')||localStorage.getItem('rs_city')||'bangalore';
+// Single-city site: always Bengaluru.
+const city='bangalore';
 let currentStep=1,selectedSpace=null,selectedTheme=null,selectedTier=null;
-
-/* ── CITY ── */
-function setCity(c){
-  city=c;localStorage.setItem('rs_city',c);
-  document.getElementById('ctBangalore').classList.toggle('active',c==='bangalore');
-  document.getElementById('ctTriCity').classList.toggle('active',c==='tricity');
-  document.getElementById('citySubLabel').textContent=c==='bangalore'?'Karnataka · South India':'Chandigarh · Panchkula · Mohali';
-  if(currentStep===2&&selectedSpace&&selectedTheme)renderPlans();
-  if(document.getElementById('step1b').classList.contains('active')&&selectedSpace)renderThemes();
-}
-setCity(city);
 
 /* ── STEP NAV ── */
 function goToStep(n){
@@ -756,7 +737,7 @@ function renderThemes(){
   document.getElementById('s1bEye').textContent='Step 1 — '+meta.label;
   document.getElementById('s1bTitle').innerHTML='Choose your <em>'+meta.label.toLowerCase()+' theme</em>';
   document.getElementById('themeGrid').innerHTML=Object.values(themes).map(t=>{
-    const p=city==='bangalore'?t.plans.seed.price_b:t.plans.seed.price_t;
+    const p=t.plans.seed.price_b;
     return`<div class="theme-card" onclick="selectTheme('${t.id}',this)">
       <div class="tc-check">✓</div><span class="tc-icon">${t.icon}</span>
       <div class="tc-name">${t.name}</div>
@@ -789,7 +770,7 @@ function renderPlans(){
   const tiers=['seed','bloom','canopy'];
   document.getElementById('planTabs').innerHTML=tiers.map(t=>{
     const plan=theme.plans[t];
-    const price=city==='bangalore'?plan.price_b:plan.price_t;
+    const price=plan.price_b;
     const tierLabel=t.charAt(0).toUpperCase()+t.slice(1);
     return`<div class="plan-tab${selectedTier===t?' active':''}" onclick="choosePlan('${t}')">
       ${plan.badge?`<div class="pc-badge">${plan.badge}</div>`:''}
@@ -839,7 +820,7 @@ const CAT_ORDER=['tree','tropical','fruit','vegetable','herb','flowering','succu
 function renderPlantGrid(){
   const theme=THEMES[selectedSpace][selectedTheme];
   const plan=theme.plans[selectedTier];
-  const price=city==='bangalore'?plan.price_b:plan.price_t;
+  const price=plan.price_b;
   const tierLabel=selectedTier.charAt(0).toUpperCase()+selectedTier.slice(1);
 
   document.getElementById('plantSectionLabel').textContent='Plants included in '+tierLabel+' Plan ('+plan.plants.length+')';
@@ -891,7 +872,7 @@ function goToStep3(){
 function buildSummary(){
   const theme=THEMES[selectedSpace][selectedTheme];
   const plan=theme.plans[selectedTier];
-  const price=city==='bangalore'?plan.price_b:plan.price_t;
+  const price=plan.price_b;
   const meta=SPACE_META[selectedSpace];
   const tierName=selectedTier.charAt(0).toUpperCase()+selectedTier.slice(1);
   const plantHtml=plan.plants.map(p=>`<div class="qs3-plant-row"><span class="pe">${p.e}</span>${p.n}</div>`).join('');
@@ -904,7 +885,7 @@ function buildSummary(){
     <div class="qs3-totals">
       <div class="qs3-row total"><span class="l">Plan price</span><span class="a">${fmt(price)}</span></div>
     </div>
-    <div class="city-badge-row"><span class="city-badge">${city==='bangalore'?'Bengaluru':'Tricity'}</span><span style="font-size:11px;color:var(--muted);font-weight:300;">50% advance to confirm</span></div>`;
+    <div class="city-badge-row"><span class="city-badge">${'Bengaluru'}</span><span style="font-size:11px;color:var(--muted);font-weight:300;">50% advance to confirm</span></div>`;
 }
 
 /* ── SUBMIT ── */
@@ -922,14 +903,14 @@ async function submitQuote(){
 
   const theme=THEMES[selectedSpace][selectedTheme];
   const plan=theme.plans[selectedTier];
-  const price=city==='bangalore'?plan.price_b:plan.price_t;
+  const price=plan.price_b;
   const meta=SPACE_META[selectedSpace];
   const tierName=selectedTier.charAt(0).toUpperCase()+selectedTier.slice(1);
   const refId='RS'+Date.now().toString().slice(-6);
   const waNumber='919520024449';
 
   const quoteData={
-    refId,name,phone,email,city,cityLabel:city==='bangalore'?'Bengaluru':'Tricity',
+    refId,name,phone,email,city,cityLabel:'Bengaluru',
     spaceType:selectedSpace,spaceLabel:meta.label,
     theme:theme.name,themeId:selectedTheme,
     tier:selectedTier,tierName,
@@ -965,7 +946,6 @@ async function submitQuote(){
 }
 
 function startOver(){selectedSpace=null;selectedTheme=null;selectedTier=null;goToStep(1);}
-setCity(city);
 </script>
 </body>
 </html>
