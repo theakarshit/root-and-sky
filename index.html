@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Root & Sky — Garden Design Studio</title>
-<meta name="description" content="Affordable garden design for balconies, terraces and homes. Serving Bengaluru & Tricity (Chandigarh, Panchkula, Mohali).">
+<meta name="description" content="Affordable garden design for balconies, terraces and homes. Serving all of Bengaluru.">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -182,7 +182,7 @@ section{position:relative;z-index:2;}
 
 /* CITIES SECTION */
 .cities{padding:110px 120px;background:var(--forest-mid);border-top:1px solid var(--gold-dim);}
-.cities-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:64px;}
+.cities-grid{display:grid;grid-template-columns:1fr;gap:24px;margin-top:64px;max-width:560px;margin-left:auto;margin-right:auto;}
 .city-card{background:var(--forest);border:1px solid var(--gold-dim);border-radius:var(--r);padding:44px 40px;position:relative;overflow:hidden;transition:border-color .3s;cursor:none;}
 .city-card:hover{border-color:rgba(201,168,76,.35);}
 .city-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .5s;}
@@ -278,10 +278,6 @@ footer{background:var(--forest-mid);padding:64px 120px 40px;border-top:1px solid
   <a href="#portfolio" onclick="closeMob()">Portfolio</a>
   <a href="#cities" onclick="closeMob()">Cities</a>
   <a href="#contact" onclick="closeMob()">Contact</a>
-  <div class="mob-city-switch">
-    <button onclick="setCity('bangalore');closeMob();" id="mobBangalore">Bengaluru</button>
-    <button onclick="setCity('tricity');closeMob();" id="mobTriCity">Tricity</button>
-  </div>
 </div>
 
 <!-- NAV -->
@@ -300,10 +296,6 @@ footer{background:var(--forest-mid);padding:64px 120px 40px;border-top:1px solid
     <li><a href="#contact">Contact</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:12px;">
-    <div class="city-pill">
-      <button id="navBangalore" onclick="setCity('bangalore')">Bengaluru</button>
-      <button id="navTriCity" onclick="setCity('tricity')">Tricity</button>
-    </div>
     <a href="build.html" class="nav-cta" id="navCta">Build your garden</a>
     <button class="hamburger" id="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
   </div>
@@ -315,10 +307,6 @@ footer{background:var(--forest-mid);padding:64px 120px 40px;border-top:1px solid
     <div class="hero-badge"><div class="hero-badge-dot"></div><span id="heroBadge">Garden Design Studio · Bengaluru</span></div>
     <h1 class="hero-title">Where roots<br>meet the <em>open sky</em></h1>
     <p class="hero-body">We transform balconies, terraces, and living spaces into breathing sanctuaries. Thoughtfully designed. Beautifully affordable.</p>
-    <div class="city-selector">
-      <button class="city-btn active" id="heroBangalore" onclick="setCity('bangalore')"><div class="city-btn-dot"></div>Bengaluru</button>
-      <button class="city-btn" id="heroTriCity" onclick="setCity('tricity')"><div class="city-btn-dot"></div>Tricity — Chandigarh · Panchkula · Mohali</button>
-    </div>
     <div class="hero-actions">
       <a href="build.html" class="btn-primary" id="heroCta">Design my garden</a>
       <a href="#process" class="btn-ghost">How it works <span>→</span></a>
@@ -347,7 +335,6 @@ footer{background:var(--forest-mid);padding:64px 120px 40px;border-top:1px solid
     <div class="cb-city" id="cbCity">Bengaluru</div>
     <div class="cb-area" id="cbArea">Koramangala · Indiranagar · Whitefield · HSR · Jayanagar · and all areas</div>
   </div>
-  <button class="cb-switch" onclick="switchCity()">Switch city →</button>
 </div>
 
 <!-- ABOUT -->
@@ -356,12 +343,12 @@ footer{background:var(--forest-mid);padding:64px 120px 40px;border-top:1px solid
     <div class="about-box">
       <svg width="250" height="308" viewBox="0 0 250 308" fill="none"><g opacity=".3"><path d="M125 270Q125 173 77 97" stroke="#a8bf99" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M125 270Q125 173 173 97" stroke="#a8bf99" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M125 193Q87 155 58 135" stroke="#a8bf99" stroke-width="1" fill="none"/><path d="M125 193Q163 155 192 135" stroke="#a8bf99" stroke-width="1" fill="none"/><path d="M107 232Q68 193 48 174" stroke="#a8bf99" stroke-width="1" fill="none"/><path d="M143 232Q182 193 202 174" stroke="#a8bf99" stroke-width="1" fill="none"/><ellipse cx="125" cy="77" rx="38" ry="26" stroke="#7a9e6e" stroke-width="1" fill="rgba(74,103,65,.2)"/><ellipse cx="67" cy="116" rx="30" ry="21" stroke="#7a9e6e" stroke-width="1" fill="rgba(74,103,65,.14)" transform="rotate(-20 67 116)"/><ellipse cx="183" cy="116" rx="30" ry="21" stroke="#7a9e6e" stroke-width="1" fill="rgba(74,103,65,.14)" transform="rotate(20 183 116)"/><rect x="111" y="265" width="28" height="34" rx="4" fill="rgba(74,103,65,.28)" stroke="#7a9e6e" stroke-width="1"/></g><text x="125" y="316" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-size="10" fill="rgba(168,191,153,.32)" letter-spacing="4" id="aboutCityText">BENGALURU</text></svg>
     </div>
-    <div class="about-float"><div class="af-num">2</div><div class="af-lbl">Cities served</div></div>
+    <div class="about-float"><div class="af-num">3</div><div class="af-lbl">Day installation</div></div>
   </div>
   <div class="reveal d1">
     <div class="s-eye">Our Philosophy</div>
     <h2 class="s-title">A garden is not a luxury.<br>It is a <em>necessity.</em></h2>
-    <p class="s-body" style="margin-bottom:26px;">Root & Sky was born from a simple belief — every person deserves a green corner to breathe in. We're a new garden design studio serving families across Bengaluru and Tricity who want beautiful spaces without spending a fortune.</p>
+    <p class="s-body" style="margin-bottom:26px;">Root & Sky was born from a simple belief — every person deserves a green corner to breathe in. We're a new garden design studio serving families across Bengaluru who want beautiful spaces without spending a fortune.</p>
     <p class="s-body" style="margin-bottom:38px;">From plant selection to installation, we handle everything in 3 days or less. Choose from 4 curated themes per space type, pick a plan, and we bring your garden to life.</p>
     <a href="build.html" class="btn-primary" style="display:inline-block;text-decoration:none;">Design your garden</a>
   </div>
@@ -377,10 +364,9 @@ footer{background:var(--forest-mid);padding:64px 120px 40px;border-top:1px solid
     <div class="svc-card"><svg class="svc-icon" viewBox="0 0 48 48" fill="none"><rect x="8" y="24" width="32" height="20" rx="3" stroke="#a8bf99" stroke-width="1"/><path d="M24 24Q24 14 16 8" stroke="#7a9e6e" stroke-width="1.2" fill="none"/><path d="M24 24Q24 14 32 8" stroke="#7a9e6e" stroke-width="1.2" fill="none"/><ellipse cx="24" cy="7" rx="7" ry="5" stroke="#7a9e6e" stroke-width="1" fill="rgba(74,103,65,.2)"/></svg><div class="svc-name">Balcony Gardens</div><div class="svc-desc">4 themes — Air Purifying, Flowering, Herbs & Kitchen, Succulents. Each with Seed, Bloom, and Canopy plans. Pots, soil, plants, setup — one visit.</div><div class="svc-price" id="priceBalcony">Starting ₹9,999</div></div>
     <div class="svc-card"><svg class="svc-icon" viewBox="0 0 48 48" fill="none"><rect x="4" y="28" width="40" height="16" rx="3" stroke="#a8bf99" stroke-width="1"/><path d="M12 28Q12 16 8 10" stroke="#7a9e6e" stroke-width="1.2" fill="none"/><path d="M12 28Q12 16 16 10" stroke="#7a9e6e" stroke-width="1.2" fill="none"/><path d="M24 28Q24 12 20 6" stroke="#7a9e6e" stroke-width="1.2" fill="none"/><path d="M24 28Q24 12 28 6" stroke="#7a9e6e" stroke-width="1.2" fill="none"/><path d="M36 28Q36 18 32 12" stroke="#7a9e6e" stroke-width="1.2" fill="none"/><path d="M36 28Q36 18 40 12" stroke="#7a9e6e" stroke-width="1.2" fill="none"/></svg><div class="svc-name">Terrace Retreats</div><div class="svc-desc">4 themes — Tropical Paradise, Kitchen & Edible, Flowering Retreat, Zen & Minimal. Drip irrigation, raised beds, pergola plants included.</div><div class="svc-price" id="priceTerrace">Starting ₹17,999</div></div>
     <div class="svc-card"><svg class="svc-icon" viewBox="0 0 48 48" fill="none"><rect x="6" y="18" width="36" height="26" rx="3" stroke="#a8bf99" stroke-width="1"/><path d="M14 18L14 10Q14 4 20 4L28 4Q34 4 34 10L34 18" stroke="#a8bf99" stroke-width="1" fill="none"/><circle cx="24" cy="28" r="5" stroke="#7a9e6e" stroke-width="1" fill="rgba(74,103,65,.2)"/></svg><div class="svc-name">Villa & Home</div><div class="svc-desc">4 themes — Lush Landscape, Tropical Estate, Native & Low-Water, English Cottage. Full front/back yard design with lawn, trees, and irrigation.</div><div class="svc-price" id="priceVilla">Starting ₹24,999</div></div>
-    <div class="svc-card"><svg class="svc-icon" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="20" r="12" stroke="#a8bf99" stroke-width="1" fill="rgba(74,103,65,.1)"/><path d="M24 8L24 4M36 20L40 20M24 32L24 36M12 20L8 20" stroke="#c9a84c" stroke-width="1" stroke-linecap="round"/><circle cx="24" cy="20" r="5" fill="rgba(201,168,76,.2)" stroke="#c9a84c" stroke-width="1"/></svg><div class="svc-name">AMC Care Plans</div><div class="svc-desc">3 tiers — Green (balcony, 2 visits/mo), Bloom (terrace, weekly), Canopy (villa, weekly+). Pruning, fertilising, pest control, seasonal swaps.</div><div class="svc-price" id="priceAmc">From ₹999/month</div></div>
+    <div class="svc-card"><svg class="svc-icon" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="20" r="12" stroke="#a8bf99" stroke-width="1" fill="rgba(74,103,65,.1)"/><path d="M24 8L24 4M36 20L40 20M24 32L24 36M12 20L8 20" stroke="#c9a84c" stroke-width="1" stroke-linecap="round"/><circle cx="24" cy="20" r="5" fill="rgba(201,168,76,.2)" stroke="#c9a84c" stroke-width="1"/></svg><div class="svc-name">AMC Care Plans</div><div class="svc-desc">3 tiers — Green (balcony, 2 visits/mo), Bloom (terrace, weekly), Canopy (villa, weekly+). Pruning, fertilising, pest control, seasonal swaps.</div><div class="svc-price" id="priceAmc">From ₹1,499/month</div></div>
     <div class="svc-card"><svg class="svc-icon" viewBox="0 0 48 48" fill="none"><rect x="8" y="8" width="32" height="32" rx="4" stroke="#a8bf99" stroke-width="1"/><path d="M16 28L20 24L26 30L30 22L36 28" stroke="#7a9e6e" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="svc-name">Office Greening</div><div class="svc-desc">Biophilic design for workspaces — reception, meeting rooms, open floors. Plant rental or one-time install + AMC.</div><div class="svc-price" id="priceOffice">From ₹19,999</div></div>
     <div class="svc-card"><svg class="svc-icon" viewBox="0 0 48 48" fill="none"><path d="M24 6L24 42" stroke="#a8bf99" stroke-width="1" stroke-dasharray="2 3"/><ellipse cx="24" cy="18" rx="14" ry="9" stroke="#7a9e6e" stroke-width="1.2" fill="rgba(74,103,65,.15)" transform="rotate(-10 24 18)"/><ellipse cx="24" cy="30" rx="10" ry="7" stroke="#7a9e6e" stroke-width="1" fill="rgba(74,103,65,.1)" transform="rotate(15 24 30)"/></svg><div class="svc-name">Gift a Garden</div><div class="svc-desc">Curated starter kits for gifting — Seed Kit (3 plants, ₹1,499), Bloom Kit (5-6 plants, ₹3,499), Canopy Kit (8-10 plants, ₹5,999). Corporate bulk from ₹600/unit.</div><div class="svc-price">Starting ₹1,499</div></div>
-    <div class="svc-card"><svg class="svc-icon" viewBox="0 0 48 48" fill="none"><path d="M24 4Q28 16 40 20Q28 24 24 36Q20 24 8 20Q20 16 24 4Z" stroke="#c9a84c" stroke-width="1" fill="rgba(201,168,76,.12)"/><circle cx="24" cy="20" r="4" fill="rgba(201,168,76,.2)" stroke="#c9a84c" stroke-width=".8"/></svg><div class="svc-name" id="svcSeasonalName">Seasonal Swap</div><div class="svc-desc" id="svcSeasonalDesc">Tricity exclusive — we replace your summer/winter plants twice a year to keep your garden blooming through Chandigarh's extreme seasons.</div><div class="svc-price" id="svcSeasonalPrice">From ₹3,000/swap</div></div>
     <div class="svc-card"><svg class="svc-icon" viewBox="0 0 48 48" fill="none"><path d="M10 36L24 12L38 36Z" stroke="#a8bf99" stroke-width="1" fill="rgba(74,103,65,.1)"/><path d="M24 12L24 36" stroke="#7a9e6e" stroke-width=".8" stroke-dasharray="2 2"/><circle cx="18" cy="28" r="3" fill="rgba(122,158,110,.25)" stroke="#7a9e6e" stroke-width=".8"/><circle cx="30" cy="28" r="3" fill="rgba(122,158,110,.25)" stroke="#7a9e6e" stroke-width=".8"/></svg><div class="svc-name">Drip & Irrigation</div><div class="svc-desc">Smart watering systems for any garden size — gravity-fed, timer-controlled, or WiFi-enabled. Installed as add-on or standalone.</div><div class="svc-price">From ₹2,500</div></div>
   </div>
 </section>
@@ -411,21 +397,14 @@ footer{background:var(--forest-mid);padding:64px 120px 40px;border-top:1px solid
 
 <!-- CITIES -->
 <section class="cities" id="cities">
-  <div style="text-align:center;max-width:480px;margin:0 auto;" class="reveal"><div class="s-eye">Where we work</div><h2 class="s-title">Two cities.<br><em>One vision.</em></h2></div>
+  <div style="text-align:center;max-width:480px;margin:0 auto;" class="reveal"><div class="s-eye">Where we work</div><h2 class="s-title">All of Bengaluru.<br><em>One vision.</em></h2></div>
   <div class="cities-grid reveal d1">
-    <div class="city-card" onclick="setCity('bangalore');document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+    <div class="city-card" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
       <div class="cc-name">Bengaluru</div>
       <div class="cc-sub">Karnataka · South India</div>
       <div class="cc-desc">Our home base. Bengaluru's mild, year-round climate makes it perfect for every garden theme — from air-purifying foliage to tropical terraces.</div>
       <div class="cc-areas"><span class="cc-area">Koramangala</span><span class="cc-area">Indiranagar</span><span class="cc-area">HSR Layout</span><span class="cc-area">Whitefield</span><span class="cc-area">Jayanagar</span><span class="cc-area">JP Nagar</span><span class="cc-area">Hebbal</span><span class="cc-area">+ All areas</span></div>
-      <a href="build.html?city=bangalore" class="cc-link">Design for Bengaluru →</a>
-    </div>
-    <div class="city-card" onclick="setCity('tricity');document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
-      <div class="cc-name">Tricity</div>
-      <div class="cc-sub">Chandigarh · Panchkula · Mohali</div>
-      <div class="cc-desc">Now serving Tricity — one of India's most beautiful planned regions. Gardens designed for the unique climate and lifestyle of the region.</div>
-      <div class="cc-areas"><span class="cc-area">Chandigarh</span><span class="cc-area">Panchkula</span><span class="cc-area">Mohali</span><span class="cc-area">Sector 7–22</span><span class="cc-area">Aerocity</span><span class="cc-area">Zirakpur</span><span class="cc-area">+ All areas</span></div>
-      <a href="build.html?city=tricity" class="cc-link">Design for Tricity →</a>
+      <a href="build.html" class="cc-link">Design for Bengaluru →</a>
     </div>
   </div>
 </section>
@@ -453,7 +432,7 @@ footer{background:var(--forest-mid);padding:64px 120px 40px;border-top:1px solid
     <h2 class="s-title">Ready to grow<br><em>your space?</em></h2>
     <p class="s-body" style="margin-bottom:28px;">Tell us about your space. Site visit is always free, zero obligation. We come to you.</p>
     <div class="c-info" id="contactInfo">
-      <div class="c-row"><div class="c-icon">📱</div><span>WhatsApp <a href="#" id="waLink">+91 98765 43210</a></span></div>
+      <div class="c-row"><div class="c-icon">📱</div><span>WhatsApp <a href="https://wa.me/919520024449" id="waLink">+91 95200 24449</a></span></div>
       <div class="c-row"><div class="c-icon">📸</div><span>Instagram <a href="#">@rootandsky.in</a></span></div>
       <div class="c-row"><div class="c-icon">📍</div><span id="cityServing">Serving all of Bengaluru</span></div>
       <div class="c-row"><div class="c-icon">⏱️</div><span>We respond within 1 hour, 7 days a week</span></div>
@@ -481,12 +460,12 @@ footer{background:var(--forest-mid);padding:64px 120px 40px;border-top:1px solid
 <!-- FOOTER -->
 <footer>
   <div class="ft-top">
-    <div class="ft-brand"><div class="logo-lg">Root <em>&</em> Sky</div><p>Affordable garden design for homes, balconies, and terraces. Serving Bengaluru & Tricity.</p></div>
+    <div class="ft-brand"><div class="logo-lg">Root <em>&</em> Sky</div><p>Affordable garden design for homes, balconies, and terraces. Serving all of Bengaluru.</p></div>
     <div class="ft-col"><h4>Services</h4><ul><li><a href="#services">Balcony gardens</a></li><li><a href="#services">Terrace retreats</a></li><li><a href="#services">Villa landscaping</a></li><li><a href="#services">AMC care plans</a></li><li><a href="#services">Gift a garden</a></li></ul></div>
-    <div class="ft-col"><h4>Cities</h4><ul><li><a href="build.html?city=bangalore">Bengaluru</a></li><li><a href="build.html?city=tricity">Chandigarh</a></li><li><a href="build.html?city=tricity">Panchkula</a></li><li><a href="build.html?city=tricity">Mohali</a></li></ul></div>
+    <div class="ft-col"><h4>Areas</h4><ul><li><a href="#cities">Koramangala</a></li><li><a href="#cities">Indiranagar</a></li><li><a href="#cities">HSR Layout</a></li><li><a href="#cities">Whitefield</a></li></ul></div>
     <div class="ft-col"><h4>Connect</h4><ul><li><a href="#" id="ftWa">WhatsApp</a></li><li><a href="#">Instagram</a></li><li><a href="#">Facebook</a></li><li><a href="#contact">Contact form</a></li></ul></div>
   </div>
-  <div class="ft-bottom"><p>© 2026 Root & Sky Garden Studio · Bengaluru & Tricity</p><p style="font-size:11px;letter-spacing:.1em;color:rgba(138,158,132,.35);">GROWING BEAUTIFULLY SINCE 2025</p></div>
+  <div class="ft-bottom"><p>© 2026 Root & Sky Garden Studio · Bengaluru</p><p style="font-size:11px;letter-spacing:.1em;color:rgba(138,158,132,.35);">GROWING BEAUTIFULLY SINCE 2025</p></div>
 </footer>
 
 <script>
@@ -506,75 +485,21 @@ document.querySelectorAll('.reveal').forEach(el=>new IntersectionObserver(([e])=
 function toggleMob(){const h=document.getElementById('hamburger'),m=document.getElementById('mobMenu');h.classList.toggle('open');m.classList.toggle('open');}
 function closeMob(){document.getElementById('hamburger').classList.remove('open');document.getElementById('mobMenu').classList.remove('open');}
 
-/* ── CITY DATA ── */
-const CITIES={
-  bangalore:{
-    label:'Bengaluru',badgeText:'Garden Design Studio · Bengaluru',
-    area:'Koramangala · Indiranagar · Whitefield · HSR · Jayanagar · and all areas',
-    waNumber:'919520024449',waNumber2:'919520024449',
-    serving:'Serving all of Bengaluru',
-    from:'₹9,999',
-    prices:{balcony:'4 themes · From ₹9,999',terrace:'4 themes · From ₹17,999',villa:'4 themes · From ₹24,999',amc:'From ₹1,499/month',office:'From ₹19,999'},
-    seasonal:{name:'Seasonal Swap',desc:'Optional seasonal refresh — swap out tired plants for fresh seasonal blooms. Available on request.',price:'From ₹5,000/swap'},
-  },
-  tricity:{
-    label:'Tricity',badgeText:'Garden Design Studio · Tricity',
-    area:'Chandigarh · Panchkula · Mohali · Zirakpur · and all areas',
-    waNumber:'919520024449',waNumber2:'919520024449',
-    serving:'Serving Chandigarh, Panchkula & Mohali',
-    from:'₹9,999',
-    prices:{balcony:'4 themes · From ₹9,999',terrace:'4 themes · From ₹14,999',villa:'4 themes · From ₹19,999',amc:'From ₹999/month',office:'From ₹15,999'},
-    seasonal:{name:'Seasonal Swap',desc:'Tricity exclusive — we replace summer/winter plants twice a year to keep your garden thriving through extreme seasons.',price:'From ₹3,000/swap'},
-  }
+/* ── CITY DATA (Bengaluru only) ── */
+const CITY={
+  label:'Bengaluru',
+  waNumber:'919520024449',
 };
 
-let currentCity=localStorage.getItem('rs_city')||'bangalore';
-
-function setCity(city){
-  currentCity=city;
-  localStorage.setItem('rs_city',city);
-  applyCity();
-}
-function switchCity(){setCity(currentCity==='bangalore'?'tricity':'bangalore');}
+// Single-city site: always Bengaluru. setCity is kept as a no-op so any
+// leftover onclick handlers don't throw.
+const currentCity='bangalore';
+function setCity(){applyCity();}
 
 function applyCity(){
-  const c=CITIES[currentCity];
-  // nav pills
-  document.getElementById('navBangalore').classList.toggle('active',currentCity==='bangalore');
-  document.getElementById('navTriCity').classList.toggle('active',currentCity==='tricity');
-  document.getElementById('mobBangalore').classList.toggle('active',currentCity==='bangalore');
-  document.getElementById('mobTriCity').classList.toggle('active',currentCity==='tricity');
-  // hero
-  document.getElementById('heroBangalore').classList.toggle('active',currentCity==='bangalore');
-  document.getElementById('heroTriCity').classList.toggle('active',currentCity==='tricity');
-  document.getElementById('heroBadge').textContent=c.badgeText;
-  document.getElementById('heroFrom').textContent=c.from;
-  // city banner
-  document.getElementById('cbCity').textContent=c.label;
-  document.getElementById('cbArea').textContent=c.area;
-  // about svg text
-  document.getElementById('aboutCityText').textContent=c.label.toUpperCase();
-  // service prices
-  document.getElementById('priceBalcony').textContent=c.prices.balcony;
-  document.getElementById('priceTerrace').textContent=c.prices.terrace;
-  document.getElementById('priceVilla').textContent=c.prices.villa;
-  document.getElementById('priceAmc').textContent=c.prices.amc;
-  document.getElementById('priceOffice').textContent=c.prices.office;
-  // seasonal swap
-  if(c.seasonal){
-    document.getElementById('svcSeasonalName').textContent=c.seasonal.name;
-    document.getElementById('svcSeasonalDesc').textContent=c.seasonal.desc;
-    document.getElementById('svcSeasonalPrice').textContent=c.seasonal.price;
-  }
-  // contact
-  document.getElementById('cityServing').textContent=c.serving;
-  document.getElementById('waLink').textContent='+91 '+c.waNumber.slice(2,7)+' '+c.waNumber.slice(7);
-  document.getElementById('waLink').href='https://wa.me/'+c.waNumber;
+  const c=CITY;
   document.getElementById('waFloat').href='https://wa.me/'+c.waNumber+'?text=Hi%20Root%20%26%20Sky!%20I%27m%20interested%20in%20a%20garden%20design.';
   document.getElementById('ftWa').href='https://wa.me/'+c.waNumber;
-  // build CTA links
-  document.getElementById('navCta').href='build.html?city='+currentCity;
-  document.getElementById('heroCta').href='build.html?city='+currentCity;
 }
 
 /* CONTACT FORM → GOOGLE SHEET + WA */
@@ -588,12 +513,12 @@ async function submitContact(){
   const area=document.getElementById('cf-area').value.trim();
   const msg=document.getElementById('cf-msg').value.trim();
   if(!name||!phone){alert('Please enter your name and phone number.');return;}
-  const city=CITIES[currentCity];
+  const city=CITY;
   const refId='RS'+Date.now().toString().slice(-6);
 
   /* send to Google Sheet */
   const sheetData={
-    refId,name,phone,email:'',city:currentCity,cityLabel:city.label,
+    refId,name,phone,email:'',city:'bangalore',cityLabel:city.label,
     spaceType:type||'Not specified',spaceLabel:type||'Not specified',
     theme:'Contact Form Enquiry',themeId:'contact',
     tierName:'—',price:'—',
@@ -612,15 +537,14 @@ async function submitContact(){
 
 /* FAQ */
 const FAQS=[
-  {q:"How much does a balcony garden cost?",a:"Our Seed plans start at ₹9,999 for both cities. We offer 4 themes — Air Purifying, Flowering, Herbs & Kitchen, and Succulents — each with 3 tiers (Seed, Bloom, Canopy). Choose your theme and tier in our Garden Builder."},
+  {q:"How much does a balcony garden cost?",a:"Our Seed plans start at ₹9,999. We offer 4 themes — Air Purifying, Flowering, Herbs & Kitchen, and Succulents — each with 3 tiers (Seed, Bloom, Canopy). Choose your theme and tier in our Garden Builder."},
   {q:"Is the site visit really free?",a:"Yes — completely free with no obligation. We visit, take measurements, and understand your vision. You only pay if you choose to proceed."},
   {q:"How long does installation take?",a:"Balcony and small terrace projects are done in a single day (4–6 hours). Larger villa or terrace projects take 2–3 days max."},
   {q:"What if the plants die after installation?",a:"We offer a 30-day plant health guarantee. If any plant doesn't survive within the first 30 days, we replace it at no charge."},
-  {q:"What are your AMC care plan tiers?",a:"Three tiers: Green (balcony, ₹999–₹1,499/mo, 2 visits), Bloom (terrace, ₹1,999–₹2,999/mo, weekly visits), and Canopy (villa, ₹3,999–₹5,999/mo, weekly + pest control + seasonal swaps)."},
-  {q:"Do you handle seasonal plant swaps in Tricity?",a:"Yes! Chandigarh's extreme seasons (45°C summers, 2°C winters) require plant swaps twice a year. We offer this as a standalone service from ₹3,000/swap or included in Canopy AMC plans."},
+  {q:"What are your AMC care plan tiers?",a:"Three tiers: Green (balcony, ₹1,499/mo, 2 visits), Bloom (terrace, ₹1,999–₹2,999/mo, weekly visits), and Canopy (villa, ₹3,999–₹5,999/mo, weekly + pest control + seasonal care)."},
   {q:"Can I choose a specific garden theme?",a:"Absolutely. Each space type (balcony, terrace, villa) has 4 curated themes with different plant types and aesthetics. Use our Garden Builder to explore themes, pick a plan, and even add individual plants."},
-  {q:"What areas do you serve?",a:"Bengaluru: Koramangala, Indiranagar, HSR, Whitefield, Jayanagar, JP Nagar, Hebbal, and all areas. Tricity: all of Chandigarh, Panchkula, Mohali, Zirakpur, and surroundings."},
-  {q:"Do you offer corporate or office greening?",a:"Yes — we offer biophilic office design starting at ₹19,999 (Bengaluru) or ₹15,999 (Tricity). We also offer plant rental models for offices at ₹200–₹800/plant/month with maintenance included."},
+  {q:"What areas do you serve?",a:"All of Bengaluru — Koramangala, Indiranagar, HSR, Whitefield, Jayanagar, JP Nagar, Hebbal, and surrounding areas."},
+  {q:"Do you offer corporate or office greening?",a:"Yes — we offer biophilic office design starting at ₹19,999. We also offer plant rental models for offices at ₹200–₹800/plant/month with maintenance included."},
   {q:"Do you have gift options?",a:"Yes! Our garden gift kits start at ₹1,499 (Seed Kit, 3 plants) up to ₹5,999 (Canopy Kit, 8–10 plants). Corporate bulk orders from ₹600/unit with custom branding."},
 ];
 document.getElementById('faqGrid').innerHTML=FAQS.map((f,i)=>`<div class="faq-item" id="fq${i}"><button class="faq-q" onclick="toggleFaq(${i})">${f.q}<em class="faq-icon">+</em></button><div class="faq-a"><p>${f.a}</p></div></div>`).join('');
